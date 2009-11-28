@@ -17,7 +17,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 # parse_plan returns the expected number of test given a TAP stream as a string
 
 .sub parse_plan :method
-    .local string tap
+    .param string tap
     .local pmc plan_line
     .local pmc plan_parts
     .local int num_expected_tests
