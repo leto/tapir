@@ -22,15 +22,16 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .local pmc plan_parts
     .local int num_expected_tests
     .local string delim
+    .local string plan
 
     plan_line = new 'ResizablePMCArray'
     delim               = "\n"
     split plan_line, delim, tap
-    $S0                 = plan_line[0]
-    unless $S0 goto error
+    plan                 = plan_line[0]
+    unless plan goto error
     delim               = ".."
     plan_parts = new 'ResizablePMCArray'
-    split plan_parts, delim, $S0
+    split plan_parts, delim, plan
 
     unless plan_parts goto plan_error
     num_expected_tests  = plan_parts[1]
