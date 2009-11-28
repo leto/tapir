@@ -10,6 +10,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .local int num_tests
     $S0 = "1..5\nFoobar!"
     num_tests = parse_plan($S0)
+    print "Expected number of tests="
     say num_tests
 .end
 
@@ -55,6 +56,8 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     delim               = "\n"
     split tap_lines, delim, tap
     plan                = tap_lines[0]
+    print "plan="
+    say plan
     unless plan goto error
     delim               = ".."
     plan_parts = new 'ResizablePMCArray'
