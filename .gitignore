@@ -1,0 +1,6 @@
+*core
+*.bak
+\.*sw?
+tags
+.DS_Store
+.prove
