@@ -1,5 +1,4 @@
-# Copyright (C) 2006-2009, Parrot Foundation.
-# $Id$
+# Copyright (C) 2009, Jonathan "Duke" Leto <jonathan@leto.net>
 
 .sub 'main' :main
     load_bytecode 'lib/Tapir/Parser.pir'
