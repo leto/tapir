@@ -10,3 +10,14 @@ To run the Tapir test suite with Tapir:
 
     $ parrot t/harness.pir t/*.t
 
+That might not be fully functional yet, but you can always use parrot or prove to run Tapir tests:
+
+    $ parrot t/01-parse_plan.t
+
+You should see something like:
+
+1..3
+ok 1 - parse_plan can parse a simple plan
+ok 2 - parse_plan can parse a single test plan
+ok 3 - parse_plan can parse a no-test plan
+
