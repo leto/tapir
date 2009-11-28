@@ -14,6 +14,36 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 #    set_hll_global [ 'Tapir'; 'Parser' ], '_parser', parser
 #.end
 
+.sub parse_tapstream
+    .param string tap
+    .local string curr_line, delim
+    .local int passed, failed, skipped, todoed
+    .local int i
+    .local int curr_test
+    .local pmc tap_lines
+    .local pmc parts
+    i = 1
+
+    tap_lines = new 'ResizablePMCArray'
+    parts     = new 'ResizablePMCArray'
+    delim               = "\n"
+    split tap_lines, delim, tap
+
+  loop:
+    curr_line = tap_lines[i]
+    unless curr_line goto done
+    delim    = "ok "
+
+    split parts, delim, curr_line
+    curr_test = parts[1]
+    # check curr_test for comments
+    inc i
+    goto loop
+
+  done:
+    .return (passed,failed,skipped,todoed)
+.end
+
 # parse_plan returns the expected number of test given a TAP stream as a string
 
 .sub parse_plan :method
