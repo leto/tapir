@@ -14,7 +14,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 #    set_hll_global [ 'Tapir'; 'Parser' ], '_parser', parser
 #.end
 
-.sub parse_tapstream
+.sub parse_tapstream :method
     .param string tap
     .local string curr_line, delim
     .local int passed, failed, skipped, todoed
@@ -41,6 +41,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     goto loop
 
   done:
+    # TODO: return a proper object
     .return (passed,failed,skipped,todoed)
 .end
 

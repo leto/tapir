@@ -17,10 +17,18 @@
     tapir = klass.'new'()
 
     # run tests
-    test_basic(tapir)
+    test_parse_plan(tapir)
+    test_parse_tapstream(tapir)
 .end
 
-.sub test_basic
+.sub test_parse_tapstream
+    .param pmc tapir
+    .local pmc stream
+    $S0  = "1..2\nok 1\nnot ok 2\n"
+    stream = tapir.'parse_tapstream'($S0)
+.end
+
+.sub test_parse_plan
     .param pmc tapir
     .local int num_tests
 
