@@ -5,3 +5,8 @@ It eats test output and tells humans if the test suite passed, and if not,
 which kind of pretty colors of smoke came out.
 
 The only requirement for Tapir is Parrot 1.8.0 or higher.
+
+To run the Tapir test suite with Tapir:
+
+    $ parrot t/harness.pir t/*.t
+
