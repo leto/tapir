@@ -1,12 +1,6 @@
-# Copyright (C) 2009, Jonathan "Duke" Leto
+# Copyright (C) 2009, Jonathan "Duke" Leto <jonathan@leto.net>
 
 .namespace [ 'Tapir'; 'Base' ]
-
-.sub _initialize :load
-
-    .local pmc test
-    set_hll_global [ 'Tapir'; 'Base' ], '_test', test
-.end
 
 =head1 AUTHOR
 
