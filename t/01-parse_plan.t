@@ -10,7 +10,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(1)
+    plan(3)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -27,6 +27,14 @@
     $S0  = "1..5\nCauchy Residue Theorem!"
     num_tests = tapir.'parse_plan'($S0)
     is(num_tests,5,'parse_plan can parse a simple plan')
+
+    $S0  = "1..1\nCauchy Residue Theorem!"
+    num_tests = tapir.'parse_plan'($S0)
+    is(num_tests,1,'parse_plan can parse a single test plan')
+
+    $S0  = "1..0\nCauchy Residue Theorem!"
+    num_tests = tapir.'parse_plan'($S0)
+    is(num_tests,0,'parse_plan can parse a no-test plan')
 .end
 
 
