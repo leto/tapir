@@ -2,8 +2,12 @@
 
 .namespace [ 'Tapir'; 'Stream' ]
 
-# This is so you can run parrot on this file as a syntax check
-.sub main :main
+.sub _initialize :load :method
+    addattribute self, "pass"
+    addattribute self, "fail"
+    addattribute self, "todo"
+    addattribute self, "skip"
+    addattribute self, "plan"
 .end
 
 .sub set_pass :method

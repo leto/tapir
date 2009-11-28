@@ -4,6 +4,7 @@
 #    load_bytecode 'PGE.pbc'
 #    load_bytecode 'Dumper.pbc'
 .include 'lib/Tapir/Parser.pir'
+.include 'lib/Tapir/Stream.pir'
 
 
 .sub main :main
@@ -25,7 +26,9 @@
     .param pmc tapir
     .local pmc stream
     $S0  = "1..2\nok 1\nnot ok 2\n"
-    stream = tapir.'parse_tapstream'($S0)
+    #stream = tapir.'parse_tapstream'($S0)
+    #$S1 = typeof stream
+    #say stream
 .end
 
 .sub test_parse_plan

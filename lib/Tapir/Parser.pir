@@ -17,11 +17,9 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 .sub parse_tapstream :method
     .param string tap
     .local string curr_line, delim
-    .local int passed, failed, skipped, todoed
-    .local int i
-    .local int curr_test
-    .local pmc tap_lines
-    .local pmc parts
+    .local pmc plan, pass, fail, skip, todo
+    .local int i, curr_test
+    .local pmc tap_lines, parts, klass, stream
     i = 1
 
     tap_lines = new 'ResizablePMCArray'
@@ -41,8 +39,15 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     goto loop
 
   done:
+    klass  = newclass [ 'Tapir'; 'Stream' ]
+    stream = new klass
+    stream.'set_pass'(pass)
+    stream.'set_fail'(fail)
+    stream.'set_todo'(todo)
+    stream.'set_skip'(skip)
+    
     # TODO: return a proper object
-    .return (passed,failed,skipped,todoed)
+    .return (stream)
 .end
 
 # parse_plan returns the expected number of test given a TAP stream as a string
