@@ -2,6 +2,7 @@
 # $Id$
 
 .sub 'main' :main
+    load_bytecode 'lib/Tapir/Parser.pir'
     say "I will be a PIR TAP harness one day when I am big and strong!"
 .end
 
