@@ -18,10 +18,14 @@
     .local string file
     .local string output
     .local int success
+    .local int total_files, failing_files
     i = 0
+    failing_files = 0
+    total_files   = 0
  loop:
     file = argv[i]
     unless file goto done
+    inc total_files
     print file
     print ".........."
     output = qx('parrot',file)
@@ -35,8 +39,9 @@
     goto redo
  fail:
     print "failed "
-    $I0 = stream.'get_pass'()
+    $I0 = stream.'get_fail'()
     print $I0
+    inc failing_files
     $S1 = stream.'total'()
     $S0 = "/" . $S1
     print $S0
@@ -46,6 +51,11 @@
     goto loop
 
  done:
+    if failing_files goto print_fail
+    say "PASSED"
+    goto done
+  print_fail:
+    say "FAILED"
 .end
 
 .sub 'qx'
