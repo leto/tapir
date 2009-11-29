@@ -11,7 +11,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(29)
+    plan(33)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -19,10 +19,35 @@
 
     # run tests
     test_parse_plan(tapir)
+    test_is_pass(tapir)
     test_parse_tapstream_simple(tapir)
     test_parse_tapstream_all_pass(tapir)
     test_parse_tapstream_all_fail(tapir)
     test_parse_tapstream_diagnostics(tapir)
+.end
+
+.sub test_is_pass
+    .param pmc tapir
+    .local pmc stream
+    $S0  = "1..2\nok 1 - i like cheese\nok 2 - foobar\n"
+    stream = tapir.'parse_tapstream'($S0)
+    $I0 = stream.'is_pass'()
+    is($I0,1,"is_pass correctly detects 2 passing tests")
+
+    $S0  = "1..3\nok 1 - i like cheese\nok 2 - foobar\nnot ok 3 - blammo!\n"
+    stream = tapir.'parse_tapstream'($S0)
+    $I0 = stream.'is_pass'()
+    is($I0,0,"is_pass correctly detected 1 failing test")
+
+    $S0  = "1..2\nok 1 - i like cheese\nok 2 - foobar\nok 3 - blammo!\n"
+    stream = tapir.'parse_tapstream'($S0)
+    $I0 = stream.'is_pass'()
+    is($I0,0,"is_pass correctly detects that too many tests have run")
+
+    $S0  = "1..4\nok 1 - i like cheese\nok 2 - foobar\nok 3 - blammo!\n"
+    stream = tapir.'parse_tapstream'($S0)
+    $I0 = stream.'is_pass'()
+    is($I0,0,"is_pass correctly detects that too few tests have run")
 .end
 
 .sub test_parse_tapstream_diagnostics

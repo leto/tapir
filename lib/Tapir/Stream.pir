@@ -14,6 +14,25 @@
     klass.'add_attribute'('plan')
 .end
 
+.sub is_pass :method
+    .local pmc fail
+    fail = getattribute self, "fail"
+    if fail goto failz
+
+    .local pmc skip, pass, todo, plan
+    skip = getattribute self, "skip"
+    pass = getattribute self, "pass"
+    todo = getattribute self, "todo"
+    plan = getattribute self, "plan"
+    $P0  = pass + todo
+    $P0 += todo
+
+    $I1 = plan == $P0
+    .return( $I1 )
+  failz:
+    .return( 0 )
+.end
+
 .sub set_pass :method
     .param pmc pass
     setattribute self, "pass", pass
