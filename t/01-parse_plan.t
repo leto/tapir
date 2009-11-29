@@ -11,7 +11,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(25)
+    plan(29)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -28,7 +28,7 @@
 .sub test_parse_tapstream_diagnostics
     .param pmc tapir
     .local pmc stream
-    $S0  = "1..2\nok 1 # i like cheese\nok 2 # foobar\n"
+    $S0  = "1..2\nok 1 - i like cheese\nok 2 - foobar\n"
     stream = tapir.'parse_tapstream'($S0)
     $I0 = stream.'get_plan'()
     is($I0,2,"parse_tapstream detects the plan correctly")
@@ -39,7 +39,7 @@
     $I0 = stream.'get_fail'()
     is($I0,0,"parse_tapstream detects no failing test")
 
-    $S0  = "1..2\nnot ok 1 # i like cheese\nnot ok 2 # foobar\n"
+    $S0  = "1..2\nnot ok 1 - i like cheese\nnot ok 2 - foobar\n"
     stream = tapir.'parse_tapstream'($S0)
     $I0 = stream.'get_plan'()
     is($I0,2,"parse_tapstream detects the plan correctly")
@@ -49,6 +49,9 @@
 
     $I0 = stream.'get_fail'()
     is($I0,2,"parse_tapstream detects 2 failing tests with diag")
+
+    $I0 = stream.'total'()
+    is($I0,2,"parse_tapstream detected 2 tests in total")
 .end
 
 .sub test_parse_tapstream_all_pass
@@ -71,6 +74,9 @@
 
     $I0 = stream.'get_skip'()
     is($I0,0,"parse_tapstream detects no skipped test")
+
+    $I0 = stream.'total'()
+    is($I0,2,"parse_tapstream detected 2 tests in total")
 .end
 
 .sub test_parse_tapstream_all_fail
@@ -93,6 +99,9 @@
 
     $I0 = stream.'get_skip'()
     is($I0,0,"parse_tapstream detects no skipped test")
+
+    $I0 = stream.'total'()
+    is($I0,2,"parse_tapstream detected 2 tests in total")
 .end
 
 .sub test_parse_tapstream_simple
@@ -117,6 +126,9 @@
 
     $I0 = stream.'get_skip'()
     is($I0,0,"parse_tapstream detects no skipped test")
+
+    $I0 = stream.'total'()
+    is($I0,2,"parse_tapstream detected 2 tests in total")
 .end
 
 .sub test_parse_plan
