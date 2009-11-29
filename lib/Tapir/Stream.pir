@@ -25,7 +25,7 @@
     todo = getattribute self, "todo"
     plan = getattribute self, "plan"
     $P0  = pass + todo
-    $P0 += todo
+    $P0 += skip
 
     $I1 = plan == $P0
     .return( $I1 )
