@@ -6,10 +6,8 @@
 .sub main :main
     .param pmc argv
     $S0  = shift argv  # get rid of harness.pir in the args list
-    say argv
     $I0  = argv
     dec $I0
-    say "I will be a PIR TAP harness one day when I am big and strong!"
 
     .local pmc tapir, klass
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -22,17 +20,31 @@
     .local int success
     i = 0
  loop:
-    if i > $I0 goto done
     file = argv[i]
-    print "file="
-    say file
+    unless file goto done
+    print file
+    print ".........."
     output = qx('parrot',file)
     stream = tapir.'parse_tapstream'(output)
     success = stream.'is_pass'()
-    print "success="
-    say success
+    unless success goto fail
+    print "passed "
+    $I0 = stream.'get_pass'()
+    print $I0
+    say " tests"
+    goto redo
+ fail:
+    print "failed "
+    $I0 = stream.'get_pass'()
+    print $I0
+    $S1 = stream.'total'()
+    $S0 = "/" . $S1
+    print $S0
+    say " tests"
+ redo:
     inc i
     goto loop
+
  done:
 .end
 
