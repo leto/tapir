@@ -11,7 +11,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(6)
+    plan(9)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -19,10 +19,10 @@
 
     # run tests
     test_parse_plan(tapir)
-    test_parse_tapstream(tapir)
+    test_parse_tapstream_simple(tapir)
 .end
 
-.sub test_parse_tapstream
+.sub test_parse_tapstream_simple
     .param pmc tapir
     .local pmc stream
     $S0  = "1..2\nok 1\nnot ok 2\n"
@@ -30,10 +30,20 @@
     $S1 = typeof stream
     is($S1,"Tapir;Stream","parse_tapstream returns a Tapir;Stream object")
 
+    $I0 = stream.'get_plan'()
+    is($I0,2,"parse_tapstream detects the plan correctly")
+
     $I0 = stream.'get_pass'()
     is($I0,1,"parse_tapstream detects a passing test")
+
     $I0 = stream.'get_fail'()
     is($I0,1,"parse_tapstream detects a failing test")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream detects no todo test")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream detects no skipped test")
 .end
 
 .sub test_parse_plan

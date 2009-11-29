@@ -25,6 +25,9 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     skip = new 'Integer'
     todo = new 'Integer'
     pass = new 'Integer'
+    plan = new 'Integer'
+
+    plan = self.'parse_plan'(tap)
 
     tap_lines = new 'ResizablePMCArray'
     parts     = new 'ResizablePMCArray'
@@ -65,6 +68,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     stream.'set_fail'(fail)
     stream.'set_todo'(todo)
     stream.'set_skip'(skip)
+    stream.'set_plan'(plan)
     .return (stream)
 .end
 
