@@ -8,12 +8,6 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
 .namespace [ 'Tapir'; 'Parser' ]
 
-#.sub _initialize :load
-#
-#    .local pmc parser
-#    set_hll_global [ 'Tapir'; 'Parser' ], '_parser', parser
-#.end
-
 .sub parse_tapstream :method
     .param string tap
     .local string curr_line, delim
@@ -35,9 +29,8 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     split tap_lines, delim, tap
     $I0 = tap_lines
 
-    .local int j
   loop:
-    if i > $I0 goto done
+    if i >= $I0 goto done
     curr_line = tap_lines[i]
     unless curr_line goto done
     delim    = "ok "
@@ -49,12 +42,12 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     curr_test = parts[1]
 
     if prefix == 'not ' goto failz
-    j = i + 1
 
-    unless curr_test == j goto redo
-    inc pass
-  redo:
+    if curr_test == i goto got_pass
+    goto loop
+  got_pass:
     # check curr_test for comments
+    inc pass
     inc i
     goto loop
   failz:
@@ -63,6 +56,9 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     goto loop
 
   done:
+    # XXX hack
+    dec pass # passes get mis-counted by 1
+
     stream = new [ 'Tapir'; 'Stream' ]
     stream.'set_pass'(pass)
     stream.'set_fail'(fail)
