@@ -11,7 +11,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(14)
+    plan(19)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -21,6 +21,7 @@
     test_parse_plan(tapir)
     test_parse_tapstream_simple(tapir)
     test_parse_tapstream_all_pass(tapir)
+    test_parse_tapstream_all_fail(tapir)
 .end
 
 .sub test_parse_tapstream_all_pass
@@ -37,6 +38,28 @@
 
     $I0 = stream.'get_fail'()
     is($I0,0,"parse_tapstream detects a failing test")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream detects no todo test")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream detects no skipped test")
+.end
+
+.sub test_parse_tapstream_all_fail
+    .param pmc tapir
+    .local pmc stream
+    $S0  = "1..2\nnot ok 1\nnot ok 2\n"
+    stream = tapir.'parse_tapstream'($S0)
+
+    $I0 = stream.'get_plan'()
+    is($I0,2,"parse_tapstream detects the plan correctly")
+
+    $I0 = stream.'get_pass'()
+    is($I0,0,"parse_tapstream detects no passing tests")
+
+    $I0 = stream.'get_fail'()
+    is($I0,2,"parse_tapstream detects 2 failing tests")
 
     $I0 = stream.'get_todo'()
     is($I0,0,"parse_tapstream detects no todo test")
