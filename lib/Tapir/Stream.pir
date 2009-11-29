@@ -2,12 +2,16 @@
 
 .namespace [ 'Tapir'; 'Stream' ]
 
-.sub _initialize :load :method
-    addattribute self, "pass"
-    addattribute self, "fail"
-    addattribute self, "todo"
-    addattribute self, "skip"
-    addattribute self, "plan"
+.sub _initialize :load :init
+    #say "Initializing!"
+    .local pmc klass
+
+    klass  = newclass [ 'Tapir'; 'Stream' ]
+    klass.'add_attribute'('pass')
+    klass.'add_attribute'('fail')
+    klass.'add_attribute'('skip')
+    klass.'add_attribute'('todo')
+    klass.'add_attribute'('plan')
 .end
 
 .sub set_pass :method

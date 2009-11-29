@@ -39,8 +39,8 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     goto loop
 
   done:
-    klass  = newclass [ 'Tapir'; 'Stream' ]
-    stream = new klass
+    stream = new [ 'Tapir'; 'Stream' ]
+
     stream.'set_pass'(pass)
     stream.'set_fail'(fail)
     stream.'set_todo'(todo)

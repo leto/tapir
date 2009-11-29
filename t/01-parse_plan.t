@@ -11,7 +11,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(3)
+    plan(4)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -26,9 +26,9 @@
     .param pmc tapir
     .local pmc stream
     $S0  = "1..2\nok 1\nnot ok 2\n"
-    #stream = tapir.'parse_tapstream'($S0)
-    #$S1 = typeof stream
-    #say stream
+    stream = tapir.'parse_tapstream'($S0)
+    $S1 = typeof stream
+    is($S1,"Tapir;Stream","parse_tapstream returns a Tapir;Stream object")
 .end
 
 .sub test_parse_plan
