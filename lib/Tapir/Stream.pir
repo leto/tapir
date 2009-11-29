@@ -40,31 +40,31 @@
 .end
 
 .sub get_pass :method
-    .param pmc pass
+    .local pmc pass
     pass = getattribute self, "pass"
     .return( pass )
 .end
 
 .sub get_fail :method
-    .param pmc fail
+    .local pmc fail
     fail = getattribute self, "fail"
     .return( fail )
 .end
 
 .sub get_todo :method
-    .param pmc todo
+    .local pmc todo
     todo = getattribute self, "todo"
     .return( todo )
 .end
 
 .sub get_skip :method
-    .param pmc skip
+    .local pmc skip
     skip = getattribute self, "skip"
     .return( skip )
 .end
 
 .sub get_plan :method
-    .param pmc plan
+    .local pmc plan
     plan = getattribute self, "plan"
     .return( plan )
 .end

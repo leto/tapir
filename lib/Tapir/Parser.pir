@@ -20,33 +20,51 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .local pmc plan, pass, fail, skip, todo
     .local int i, curr_test
     .local pmc tap_lines, parts, klass, stream
-    i = 1
+    i = 0
+    fail = new 'Integer'
+    skip = new 'Integer'
+    todo = new 'Integer'
+    pass = new 'Integer'
 
     tap_lines = new 'ResizablePMCArray'
     parts     = new 'ResizablePMCArray'
     delim               = "\n"
     split tap_lines, delim, tap
+    $I0 = tap_lines
 
+    .local int j
   loop:
+    if i > $I0 goto done
     curr_line = tap_lines[i]
     unless curr_line goto done
     delim    = "ok "
 
     split parts, delim, curr_line
+
+    .local string prefix
+    prefix    = parts[0]
     curr_test = parts[1]
+
+    if prefix == 'not ' goto failz
+    j = i + 1
+
+    unless curr_test == j goto redo
+    inc pass
+  redo:
     # check curr_test for comments
+    inc i
+    goto loop
+  failz:
+    inc fail
     inc i
     goto loop
 
   done:
     stream = new [ 'Tapir'; 'Stream' ]
-
     stream.'set_pass'(pass)
     stream.'set_fail'(fail)
     stream.'set_todo'(todo)
     stream.'set_skip'(skip)
-    
-    # TODO: return a proper object
     .return (stream)
 .end
 
