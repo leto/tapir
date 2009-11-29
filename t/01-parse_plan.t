@@ -1,11 +1,7 @@
 #!parrot
 
-#   .include 'lib/Tapir/Base.pir'
-#    load_bytecode 'PGE.pbc'
-#    load_bytecode 'Dumper.pbc'
 .include 'lib/Tapir/Parser.pir'
 .include 'lib/Tapir/Stream.pir'
-
 
 .sub main :main
     .include 'test_more.pir'
