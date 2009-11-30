@@ -44,6 +44,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     if prefix == 'not ' goto failz
 
     if curr_test == i goto got_pass
+    inc i
     goto loop
   got_pass:
     # check curr_test for comments
