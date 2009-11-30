@@ -7,18 +7,19 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(30)
+    plan(31)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
     tapir = klass.'new'()
 
     # run tests
+    test_is_pass(tapir)
+    test_really_simple(tapir)
     test_parse_tapstream_simple(tapir)
     test_parse_tapstream_all_pass(tapir)
     test_parse_tapstream_all_fail(tapir)
     test_parse_tapstream_diagnostics(tapir)
-    test_is_pass(tapir)
 .end
 
 .sub test_is_pass
@@ -149,5 +150,17 @@
 
     $I0 = stream.'total'()
     is($I0,2,"parse_tapstream detected 2 tests in total")
+.end
+
+.sub test_really_simple
+    .param pmc tapir
+    .local pmc stream
+    $S0  = <<"TAP"
+1..1
+ok 1 - parse_tapstream does not pass a dead test
+TAP
+    stream = tapir.'parse_tapstream'($S0)
+    $I0    = stream.'is_pass'()
+    is($I0,1,"a single passed test with diagnostic works")
 .end
 

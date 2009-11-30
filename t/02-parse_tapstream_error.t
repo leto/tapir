@@ -30,7 +30,7 @@ get_bool() not implemented in class 'Tapir;Parser'
 current instr.: 'parrot;Test;More;ok' pc 39 (runtime/parrot/library/Test/More.pir:108)
 called from Sub 'parrot;Tapir;Stream;main' pc 505 (t/00-sanity.t:18)
 TAP
-    say "about to parse TAP"
+    #say "about to parse TAP"
     stream = tapir.'parse_tapstream'(tap_error)
     $I0 = stream.'is_pass'()
     is($I0,0,"parse_tapstream does not pass a dead test")
