@@ -53,9 +53,11 @@
  done:
     if failing_files goto print_fail
     say "PASSED"
-    goto done
+    goto over
   print_fail:
     say "FAILED"
+  over:
+    .return()
 .end
 
 .sub 'qx'
