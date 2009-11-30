@@ -1,0 +1,6 @@
+
+* Be able to run any test file, not just PIR tests
+
+* Parse todo/skips correctly
+
+* Detailed statistics of number of passed/failed tests/files at the end of a run
