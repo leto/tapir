@@ -7,7 +7,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(1)
+    plan(3)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -32,8 +32,16 @@ called from Sub 'parrot;Tapir;Stream;main' pc 505 (t/00-sanity.t:18)
 TAP
     #say "about to parse TAP"
     stream = tapir.'parse_tapstream'(tap_error)
+
     $I0 = stream.'is_pass'()
-    is($I0,0,"parse_tapstream does not pass a dead test")
+    is($I0,0,"parse_tapstream does not pass a TAP stream with a death message")
+
+    $I0 = stream.'get_pass'()
+    is($I0,0,"parse_tapstream gets no passed tests")
+
+    $I0 = stream.'get_fail'()
+    is($I0,1,"parse_tapstream gets one failed test")
+
 .end
 
 # Local Variables:
