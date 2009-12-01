@@ -30,14 +30,15 @@
     inc total_files
     print file
     print ".........."
-    output = qx('parrot',file)
-    stream = tapir.'parse_tapstream'(output)
+    output  = qx('parrot',file)
+    stream  = tapir.'parse_tapstream'(output)
     success = stream.'is_pass'()
     unless success goto fail
     print "passed "
-    $I0 = stream.'get_pass'()
-    print $I0
-    tests += $I0
+    .local int passing_tests
+    passing_tests = stream.'get_pass'()
+    print passing_tests
+    tests += passing_tests
     say " tests"
     goto redo
  fail:
