@@ -10,9 +10,12 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
-* Detailed statistics of number of passed/failed tests/files at the end of a run
+* Exit codes are not being dealt with correctly. This will require some internal redesign.
+  stream.'is_pass' should take exit codes into account
 
-    number of passed+failed tests/files + exit codes if nonzero
+* More detailed statistics in test summary
+
+    exit codes if nonzero and test runtime
 
 * Aggregation step needs to be abstracted out to a class and tested properly
 
