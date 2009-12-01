@@ -30,3 +30,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
 * Running tests in parallel
     How to do it? There should be examples in the Parrot test suite
+
+* Submitting smoke reports to smolder
+    TAP::Harness::Archive for Parrot

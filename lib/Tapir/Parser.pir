@@ -29,6 +29,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     split tap_lines, delim, tap
     $I0 = tap_lines
 
+    .local string prefix
   loop:
     if i >= $I0 goto done
     curr_line = tap_lines[i]
@@ -37,11 +38,10 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
     split parts, delim, curr_line
 
-    .local string prefix
     prefix    = parts[0]
     curr_test = parts[1]
 
-    if prefix == 'not ' goto failz
+    if prefix == 'not ' goto fail_or_todo
 
     if curr_test == i goto got_pass
     inc i
@@ -49,6 +49,16 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
   got_pass:
     # check curr_test for comments
     inc pass
+    inc i
+    goto loop
+  fail_or_todo:
+    split parts, "# ", curr_line
+    $S0 = parts[1]
+    $S0 = substr $S0, 0, 4
+    downcase $S0
+    if $S0 != "todo" goto failz
+    # it is a TODO test!
+    inc todo
     inc i
     goto loop
   failz:

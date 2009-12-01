@@ -19,6 +19,7 @@
     .local string output
     .local int success
     .local int total_files, failing_files, failing_tests, tests
+
     i = 0
     failing_files = 0
     failing_tests = 0
@@ -35,10 +36,10 @@
     success = stream.'is_pass'()
     unless success goto fail
     print "passed "
-    .local int passing_tests
-    passing_tests = stream.'get_pass'()
-    print passing_tests
-    tests += passing_tests
+
+    $I0 = stream.'total'() # includes todo tests
+    print $I0
+    tests += $I0
     say " tests"
     goto redo
  fail:
