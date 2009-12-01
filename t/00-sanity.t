@@ -1,4 +1,4 @@
-#!parrot
+#!/usr/bin/env parrot
 
 .include 'lib/Tapir/Parser.pir'
 .include 'lib/Tapir/Stream.pir'
