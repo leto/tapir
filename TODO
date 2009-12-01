@@ -8,3 +8,4 @@
 
 * Aggregation step needs to be abstracted out to a class and tested properly
 
+* Benchmark tapir against Test::Harness and Test::Run, with euler_bench
