@@ -27,3 +27,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
 * Make the output format prettier
     line up "passed" in the same column/etc
+
+* Running tests in parallel
+    How to do it? There should be examples in the Parrot test suite
