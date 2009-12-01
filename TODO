@@ -1,5 +1,7 @@
 =head1 These are things that need doin'
 
+Please let me know if you start hacking on one of these or if you have any amazing ideas.
+
 * Be able to run any test file, not just PIR tests
 
     Run /bin/sh -c or ./file, and then default to parrot if neither work ?
@@ -17,3 +19,5 @@
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Aggregator.pm
 
 * Benchmark tapir against Test::Harness and Test::Run, with euler_bench
+    Test::Run   http://web-cpan.berlios.de/modules/Test-Run/
+    euler_bench http://github.com/notbenh/euler_bench
