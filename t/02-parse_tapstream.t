@@ -22,10 +22,10 @@
     test_parse_tapstream_diagnostics(tapir)
     test_parse_tapstream_too_many_passing_tests(tapir)
     test_parse_tapstream_not_enough_tests(tapir)
-    test_parse_tapsream_todo(tapir)
+    test_parse_tapstream_todo(tapir)
 .end
 
-.sub test_parse_tapsream_todo
+.sub test_parse_tapstream_todo
     .param pmc tapir
     .local pmc stream
     .local string tap
