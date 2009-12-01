@@ -17,6 +17,5 @@
     tapir = klass.'new'()
     isa_ok(tapir,klass,"new returns a Tapir::Parser object")
 
-    # run tests
 .end
 

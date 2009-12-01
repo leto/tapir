@@ -18,10 +18,12 @@
     .local string file
     .local string output
     .local int success
-    .local int total_files, failing_files
+    .local int total_files, failing_files, failing_tests, tests
     i = 0
     failing_files = 0
+    failing_tests = 0
     total_files   = 0
+    tests         = 0
  loop:
     file = argv[i]
     unless file goto done
@@ -35,6 +37,7 @@
     print "passed "
     $I0 = stream.'get_pass'()
     print $I0
+    tests += $I0
     say " tests"
     goto redo
  fail:
@@ -42,6 +45,7 @@
     $I0 = stream.'get_fail'()
     print $I0
     inc failing_files
+    inc failing_tests
     $S1 = stream.'total'()
     $S0 = "/" . $S1
     print $S0
@@ -52,10 +56,20 @@
 
  done:
     if failing_files goto print_fail
-    say "PASSED"
+    print "PASSED "
+    print tests
+    print " test(s) in "
+    print total_files
+    say " files"
     goto over
   print_fail:
-    say "FAILED"
+    print "FAILED "
+    print failing_tests
+    print " test(s) in "
+    print failing_files
+    print "/"
+    print total_files
+    say " files"
   over:
     .return()
 .end
