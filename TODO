@@ -2,10 +2,18 @@
 
 * Be able to run any test file, not just PIR tests
 
-* Parse todo/skips correctly
+    Run /bin/sh -c or ./file, and then default to parrot if neither work ?
+
+* Parse todo/skips/bailout correctly
+
+    http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
 * Detailed statistics of number of passed/failed tests/files at the end of a run
 
+    number of passed+failed tests/files + exit codes if nonzero
+
 * Aggregation step needs to be abstracted out to a class and tested properly
+
+    http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Aggregator.pm
 
 * Benchmark tapir against Test::Harness and Test::Run, with euler_bench
