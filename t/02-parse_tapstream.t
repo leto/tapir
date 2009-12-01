@@ -7,7 +7,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(31)
+    plan(38)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -20,6 +20,41 @@
     test_parse_tapstream_all_pass(tapir)
     test_parse_tapstream_all_fail(tapir)
     test_parse_tapstream_diagnostics(tapir)
+    test_parse_tapstream_too_many_passing_tests(tapir)
+.end
+
+.sub test_parse_tapstream_too_many_passing_tests
+    .param pmc tapir
+    .local pmc stream
+    .local string tap
+    tap = <<"TAP"
+1..2
+ok 1 - Class of Tapir::Parser is of the correct type
+ok 2 - new returns a Tapir::Parser object isa Tapir;Parser
+ok 3
+TAP
+    stream = tapir.'parse_tapstream'(tap)
+
+    $I0 = stream.'get_plan'()
+    is($I0,2,"parse_tapstream detects the plan correctly")
+
+    $I0 = stream.'get_pass'()
+    is($I0,3,"parse_tapstream detects a passing test")
+
+    $I0 = stream.'get_fail'()
+    is($I0,0,"parse_tapstream detects a failing test")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream detects no todo test")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream detects no skipped test")
+
+    $I0 = stream.'total'()
+    is($I0,3,"parse_tapstream detected 2 tests in total")
+
+    $I0 = stream.'is_pass'()
+    is($I0,0,"parse_tapstream does not pass a TAP stream with too many tests")
 .end
 
 .sub test_is_pass
