@@ -3,22 +3,33 @@
 .include 'lib/Tapir/Parser.pir'
 .include 'lib/Tapir/Stream.pir'
 
+.sub version
+    say "Tapir version 0.01"
+    exit 0
+.end
+
 .sub main :main
     .param pmc argv
 
     load_bytecode "Getopt/Obj.pbc"
     $S0  = shift argv  # get rid of harness.pir in the args list
 
+  getopt:
     # parse command line args
     .local pmc getopts, opts
     getopts = new "Getopt::Obj"
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
+    push getopts, "version"
     opts = getopts."get_options"(argv)
 
     .local string exec
     exec = opts["exec"]
+    $S0  = opts["version"]
+    unless $S0 goto make_parser
+    version()
 
+  make_parser:
     .local pmc tapir, klass
     klass = newclass [ 'Tapir'; 'Parser' ]
     tapir = klass.'new'()

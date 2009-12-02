@@ -12,7 +12,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
 * Use Getopt to have some nice command line options, like
     --help
-    --version
     --shuffle
 
 * Parse todo/skips/bailout correctly
