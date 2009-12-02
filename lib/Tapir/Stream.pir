@@ -12,6 +12,7 @@
     klass.'add_attribute'('skip')
     klass.'add_attribute'('todo')
     klass.'add_attribute'('plan')
+    klass.'add_attribute'('exit_code')
 .end
 
 .sub is_pass :method
@@ -19,18 +20,27 @@
     fail = getattribute self, "fail"
     if fail goto failz
 
+    .local pmc exit_code
+    exit_code = self."get_exit_code"()
+    if exit_code goto failz
+
     .local pmc skip, pass, todo, plan
-    skip = getattribute self, "skip"
-    pass = getattribute self, "pass"
-    todo = getattribute self, "todo"
-    plan = getattribute self, "plan"
-    $P0  = pass + todo
-    $P0 += skip
+    skip  = self."get_skip"()
+    pass  = self."get_pass"()
+    todo  = self."get_todo"()
+    plan  = self."get_plan"()
+    $P0   = pass + todo
+    $P0  += skip
 
     $I1 = plan == $P0
     .return( $I1 )
   failz:
     .return( 0 )
+.end
+
+.sub set_exit_code :method
+    .param pmc exit_code
+    setattribute self, "exit_code", exit_code
 .end
 
 .sub set_pass :method
@@ -56,6 +66,12 @@
 .sub set_plan :method
     .param pmc plan
     setattribute self, "plan", plan
+.end
+
+.sub get_exit_code :method
+    .local pmc exit_code
+    exit_code = getattribute self, "exit_code"
+    .return( exit_code )
 .end
 
 .sub get_pass :method

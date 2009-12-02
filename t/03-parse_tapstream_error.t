@@ -7,7 +7,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(19)
+    plan(27)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -16,6 +16,46 @@
     test_parse_death(tapir)
     test_parse_death_with_passing_tests(tapir)
     test_plumage_sanity(tapir)
+    test_exit_code(tapir)
+.end
+
+.sub test_exit_code
+    .param pmc tapir
+    .local string tap_error
+    .local pmc stream
+    tap_error = <<"TAP"
+1..2
+ok 1 - Class of Tapir::Parser is of the correct type
+ok 2 - new returns a Tapir::Parser object isa Tapir;Parser
+eat it!
+current instr.: 'parrot;Tapir;Stream;main' pc 554 (t/00-sanity.t:20)
+TAP
+    stream = tapir.'parse_tapstream'(tap_error,42)
+
+    $I0 = stream.'get_plan'()
+    is($I0,2,"plan is correct")
+
+    $I0 = stream.'is_pass'()
+    is($I0,0,"parse_tapstream does not pass something with a non-successful exit code")
+
+    $I0 = stream.'get_pass'()
+    is($I0,2,"parse_tapstream gets 2 passed tests")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream gets no todo tests")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream gets no skip tests")
+
+    $I0 = stream.'get_fail'()
+    is($I0,0,"parse_tapstream gets no fails")
+
+    $I0 = stream.'total'()
+    is($I0,2,"parse_tapstream gets correct # of tests in total")
+
+    $I0 = stream.'get_exit_code'()
+    is($I0,42,"parse_tapstream gets correct exit code")
+
 .end
 
 .sub test_plumage_sanity
