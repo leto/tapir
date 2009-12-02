@@ -8,8 +8,6 @@
 
     load_bytecode "Getopt/Obj.pbc"
     $S0  = shift argv  # get rid of harness.pir in the args list
-    $I0  = argv
-    dec $I0
 
     # parse command line args
     .local pmc getopts, opts
