@@ -21,13 +21,16 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     pass = new 'Integer'
     plan = new 'Integer'
 
-    plan = self.'parse_plan'(tap)
 
     tap_lines = new 'ResizablePMCArray'
     parts     = new 'ResizablePMCArray'
     delim               = "\n"
     split tap_lines, delim, tap
     $I0 = tap_lines
+
+    .local string plan_line
+    plan_line = tap_lines[0]
+    plan      = self.'parse_plan'(plan_line)
 
     .local string prefix
   loop:
@@ -82,21 +85,14 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 # parse_plan returns the expected number of test given a TAP stream as a string
 
 .sub parse_plan :method
-    .param string tap
-    .local pmc plan_line
+    .param string plan_line
     .local pmc plan_parts
     .local int num_expected_tests
     .local string delim
-    .local string plan
 
-    plan_line = new 'ResizablePMCArray'
-    delim               = "\n"
-    split plan_line, delim, tap
-    plan                 = plan_line[0]
-    unless plan goto error
     delim               = ".."
     plan_parts = new 'ResizablePMCArray'
-    split plan_parts, delim, plan
+    split plan_parts, delim, plan_line
 
     unless plan_parts goto plan_error
     num_expected_tests  = plan_parts[1]
