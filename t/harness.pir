@@ -30,8 +30,11 @@
     unless file goto done
     inc total_files
     print file
+    # these should be normalized to make the output format 'pretty'
     print ".........."
-    output  = qx('parrot',file)
+
+    # how to make this platform-independent?
+    output  = qx('/bin/sh','-c',file)
     stream  = tapir.'parse_tapstream'(output)
     success = stream.'is_pass'()
     unless success goto fail
