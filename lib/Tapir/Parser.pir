@@ -10,6 +10,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
 .sub parse_tapstream :method
     .param string tap
+    .param int exit_code :optional
     .local string curr_line
     .local pmc plan, pass, fail, skip, todo
     .local int i, curr_test, reported_test
@@ -79,6 +80,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     stream.'set_todo'(todo)
     stream.'set_skip'(skip)
     stream.'set_plan'(plan)
+    stream.'set_exit_code'(exit_code)
     .return (stream)
 .end
 

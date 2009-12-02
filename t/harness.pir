@@ -3,33 +3,42 @@
 .include 'lib/Tapir/Parser.pir'
 .include 'lib/Tapir/Stream.pir'
 
+.sub version
+    say "Tapir version 0.01"
+    exit 0
+.end
+
 .sub main :main
     .param pmc argv
 
     load_bytecode "Getopt/Obj.pbc"
     $S0  = shift argv  # get rid of harness.pir in the args list
-    $I0  = argv
-    dec $I0
 
+  getopt:
     # parse command line args
     .local pmc getopts, opts
     getopts = new "Getopt::Obj"
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
+    push getopts, "version"
     opts = getopts."get_options"(argv)
 
     .local string exec
     exec = opts["exec"]
+    $S0  = opts["version"]
+    unless $S0 goto make_parser
+    version()
 
+  make_parser:
     .local pmc tapir, klass
     klass = newclass [ 'Tapir'; 'Parser' ]
     tapir = klass.'new'()
 
-    .local pmc stream
+    .local pmc stream, qx_data
     .local int i
     .local string file
     .local string output
-    .local int success
+    .local int success, exit_code
     .local int total_files, failing_files, failing_tests, tests
 
     i = 0
@@ -52,9 +61,12 @@
     unless exec goto run_cmd
     exec_cmd = exec
  run_cmd:
-    output  = qx(exec,file)
-    stream  = tapir.'parse_tapstream'(output)
-    success = stream.'is_pass'()
+    qx_data   = qx(exec,file)
+    output    = qx_data[0]
+    exit_code = qx_data[1]
+  parse:
+    stream    = tapir.'parse_tapstream'(output, exit_code)
+    success   = stream.'is_pass'()
     unless success goto fail
     print "passed "
 
@@ -62,6 +74,11 @@
     print $I0
     tests += $I0
     say " tests"
+
+    unless exit_code goto redo
+    # all tests passed but file had non-zero exit code
+    inc failing_files
+
     goto redo
  fail:
     print "failed "
@@ -121,7 +138,11 @@
     store_dynamic_lex '$!', exit_status
   skip_exit_status:
 
-    .return (output)
+    # hack
+    $P0 = new 'ResizablePMCArray'
+    $P0[0] = output
+    $P0[1] = exit_status
+    .return ($P0)
 
   pipe_open_error:
     $S0  = 'Unable to execute "'

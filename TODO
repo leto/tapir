@@ -10,7 +10,9 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
     We also have the option of using proc_exec from the global parrot config
 
-* Use Getopt to have some nice command line options, like --help and --version
+* Use Getopt to have some nice command line options, like
+    --help
+    --shuffle
 
 * Parse todo/skips/bailout correctly
 
@@ -38,6 +40,8 @@ Please let me know if you start hacking on one of these or if you have any amazi
     How to do it? There should be examples in the Parrot test suite
 
 * Tests and implementation for parsing invalid plans
+
+* Tests and implementation for out of order test notification
 
 * Submitting smoke reports to smolder
     TAP::Harness::Archive for Parrot
