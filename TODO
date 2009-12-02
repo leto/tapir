@@ -5,6 +5,7 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Be able to run any test file, not just PIR tests
 
     Run /bin/sh -c or ./file, and then default to parrot if neither work ?
+    We also have the option of using proc_exec from the global parrot config
 
 * Parse todo/skips/bailout correctly
 
@@ -17,7 +18,7 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
     exit codes if nonzero and test runtime
 
-* Aggregation step needs to be abstracted out to a class and tested properly
+* Aggregation step in t/harness.pir needs to be abstracted out into Tapir::Harness and tested properly
 
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Aggregator.pm
 
@@ -31,5 +32,9 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Running tests in parallel
     How to do it? There should be examples in the Parrot test suite
 
+* Tests and implementation for parsing invalid plans
+
 * Submitting smoke reports to smolder
     TAP::Harness::Archive for Parrot
+
+* How to deal with differences been TAP versions?

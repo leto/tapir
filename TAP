@@ -1,0 +1,56 @@
+This is a pseudo-formal grammar for TAP from: http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
+
+ (*
+     For the time being, I'm cheating on the EBNF by allowing
+     certain terms to be defined by POSIX character classes by
+     using the following syntax:
+
+       digit ::= [:digit:]
+
+     As far as I am aware, that's not valid EBNF.  Sue me.  I
+     didn't know how to write "char" otherwise (Unicode issues).
+     Suggestions welcome.
+ *)
+
+ tap            ::= version? { comment | unknown } leading_plan lines
+                    |
+                    lines trailing_plan {comment}
+
+ version        ::= 'TAP version ' positiveInteger {positiveInteger} "\n"
+
+ leading_plan   ::= plan skip_directive? "\n"
+
+ trailing_plan  ::= plan "\n"
+
+ plan           ::= '1..' nonNegativeInteger
+
+ lines          ::= line {line}
+
+ line           ::= (comment | test | unknown | bailout ) "\n"
+
+ test           ::= status positiveInteger? description? directive?
+
+ status         ::= 'not '? 'ok '
+
+ description    ::= (character - (digit | '#')) {character - '#'}
+
+ directive      ::= todo_directive | skip_directive
+
+ todo_directive ::= hash_mark 'TODO' ' ' {character}
+
+ skip_directive ::= hash_mark 'SKIP' ' ' {character}
+
+ comment        ::= hash_mark {character}
+
+ hash_mark      ::= '#' {' '}
+
+ bailout        ::= 'Bail out!' {character}
+
+ unknown        ::= { (character - "\n") }
+
+ (* POSIX character classes and other terminals *)
+
+ digit              ::= [:digit:]
+ character          ::= ([:print:] - "\n")
+ positiveInteger    ::= ( digit - '0' ) {digit}
+ nonNegativeInteger ::= digit {digit}
