@@ -5,9 +5,21 @@
 
 .sub main :main
     .param pmc argv
+
+    load_bytecode "Getopt/Obj.pbc"
     $S0  = shift argv  # get rid of harness.pir in the args list
     $I0  = argv
     dec $I0
+
+    # parse command line args
+    .local pmc getopts, opts
+    getopts = new "Getopt::Obj"
+    getopts."notOptStop"(1)
+    push getopts, "exec|e:s"
+    opts = getopts."get_options"(argv)
+
+    .local string exec
+    exec = opts["exec"]
 
     .local pmc tapir, klass
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -30,8 +42,17 @@
     unless file goto done
     inc total_files
     print file
+    # these should be normalized to make the output format 'pretty'
     print ".........."
-    output  = qx('parrot',file)
+
+    # we assume the test is PIR unless given an --exec flag
+    # how to do proper shebang-line detection?
+    .local string exec_cmd
+    exec_cmd = 'parrot'
+    unless exec goto run_cmd
+    exec_cmd = exec
+ run_cmd:
+    output  = qx(exec,file)
     stream  = tapir.'parse_tapstream'(output)
     success = stream.'is_pass'()
     unless success goto fail
