@@ -139,7 +139,8 @@
   skip_exit_status:
 
     # hack
-    $P0 = new 'ResizablePMCArray'
+    $P0 = new 'FixedPMCArray'
+    $P0 = 2
     $P0[0] = output
     $P0[1] = exit_status
     .return ($P0)
