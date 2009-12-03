@@ -95,7 +95,12 @@
     $S1 = stream.'total'()
     $S0 = "/" . $S1
     print $S0
-    say " tests"
+    print " tests"
+    $I1 = stream.'get_exit_code'()
+    unless $I1 goto redo
+    print ", exit code = "
+    say $I1
+
  redo:
     inc i
     goto loop
