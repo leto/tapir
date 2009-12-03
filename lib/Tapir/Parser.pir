@@ -45,14 +45,19 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
     if prefix == 'not ' goto fail_or_todo
 
-    if reported_test == curr_test goto got_pass
+    if reported_test == curr_test goto pass_or_skip
 
     # it was an unrecognized line
     inc i
     goto loop
-  got_pass:
-    # check curr_test for comments
-    inc pass
+  pass_or_skip:
+    split parts, "# ", curr_line
+    $S0 = parts[1]
+    $S0 = substr $S0, 0, 4
+    downcase $S0
+    if $S0 != "skip" goto passz
+    # it is a SKIP test!
+    inc skip
     inc i
     inc curr_test
     goto loop
@@ -71,6 +76,11 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     inc fail
     inc curr_test
     inc i
+    goto loop
+  passz:
+    inc pass
+    inc i
+    inc curr_test
     goto loop
 
   done:
