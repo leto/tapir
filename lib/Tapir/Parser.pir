@@ -89,19 +89,28 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 .sub parse_plan :method
     .param string plan_line
     .local pmc plan_parts
-    .local int num_expected_tests
+    # yes, a numeric
+    .local num num_expected_tests
 
-    plan_parts = new 'ResizablePMCArray'
+    $I0 = length plan_line
+    if $I0 < 4 goto plan_error
+
+    # this needs to take into account TAP Versions
+    $S0 = substr plan_line, 0, 3
+    unless $S0 == "1.." goto plan_error
+
+    plan_parts = new 'FixedPMCArray'
+    plan_parts = 2
+
     split plan_parts, "..", plan_line
-
-    unless plan_parts goto plan_error
     num_expected_tests  = plan_parts[1]
 
+    $I1 = num_expected_tests
+    unless $I1 == num_expected_tests goto plan_error
     .return (num_expected_tests)
-  error:
-    die 'Invalid TAP Stream'
   plan_error:
-    die 'Invalid TAP Plan'
+    # this indicates an invalid plan
+    .return (-1)
 .end
 
 

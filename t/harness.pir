@@ -8,25 +8,31 @@
     exit 0
 .end
 
-.sub main :main
+.sub _parse_opts
     .param pmc argv
-
-    load_bytecode "Getopt/Obj.pbc"
-    $S0  = shift argv  # get rid of harness.pir in the args list
-
-  getopt:
-    # parse command line args
     .local pmc getopts, opts
+    load_bytecode "Getopt/Obj.pbc"
     getopts = new "Getopt::Obj"
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
     push getopts, "version"
     opts = getopts."get_options"(argv)
+    .return(opts)
+.end
 
+.sub main :main
+    .param pmc argv
+    .local pmc opts
     .local string exec
+
+    $S0  = shift argv  # get rid of harness.pir in the args list
+
+    # parse command line args
+    opts = _parse_opts(argv)
     exec = opts["exec"]
-    $S0  = opts["version"]
-    unless $S0 goto make_parser
+    $S1  = opts["version"]
+
+    unless $S1 goto make_parser
     version()
 
   make_parser:
@@ -89,7 +95,12 @@
     $S1 = stream.'total'()
     $S0 = "/" . $S1
     print $S0
-    say " tests"
+    print " tests"
+    $I1 = stream.'get_exit_code'()
+    unless $I1 goto redo
+    print ", exit code = "
+    say $I1
+
  redo:
     inc i
     goto loop
@@ -139,7 +150,8 @@
   skip_exit_status:
 
     # hack
-    $P0 = new 'ResizablePMCArray'
+    $P0 = new 'FixedPMCArray'
+    $P0 = 2
     $P0[0] = output
     $P0[1] = exit_status
     .return ($P0)

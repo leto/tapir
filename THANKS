@@ -1,0 +1,13 @@
+=head1 These people deserve thanks
+
+* Larry Wall, for creating the Perl community and the original TEST script
+
+* The Perl 5 community, for driving the testing world kicking and screaming
+into the future via Test::Harness. A few usual suspects are:
+
+    Tim Bunce, Andreas Koenig, Schwern, chromatic, Andy Lester and Andy Armstrong
+
+* The Parrot Team, for hacking on the coolest VM around
+
+* Joshua Isom, for writing Getopt::Obj in PIR, which Tapir uses to parse
+command line options

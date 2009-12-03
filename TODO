@@ -10,20 +10,17 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
     We also have the option of using proc_exec from the global parrot config
 
-* Use Getopt to have some nice command line options, like
+* Use Getopt::Obj to have some nice command line options, like
     --help
     --shuffle
 
-* Parse todo/skips/bailout correctly
+  See _parse_opts() in t/harness.pir for examples
+
+* Parse skips/bailout correctly
 
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
-* Exit codes are not being dealt with correctly. This will require some internal redesign.
-  stream.'is_pass' should take exit codes into account
-
-* More detailed statistics in test summary
-
-    exit codes if nonzero and test runtime
+* More detailed statistics in test summary : test runtime
 
 * Aggregation step in t/harness.pir needs to be abstracted out into Tapir::Harness and tested properly
 
