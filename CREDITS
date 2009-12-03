@@ -22,4 +22,10 @@ E: jonathan@leto.net
 W: http://leto.net
 U: leto
 S: Portland, OR
+D: Lead Yak Shaver
+
+N: Geoff Broadwell
+U: japhb
+E: geoff@broadwell.org
+D: implementation of qx() borrowed from Plumage
 
