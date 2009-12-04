@@ -20,6 +20,39 @@
     .return(opts)
 .end
 
+.sub _find_max_file_length
+    .param pmc files
+    .local int numfiles
+    .local int maxlength
+    numfiles = files
+    maxlength = 0
+    $I0 = -1
+  loop_top:
+    inc $I0
+    if $I0 > numfiles goto loop_bottom
+    $S0 = files[$I0]
+    $I1 = length $S0
+    if $I1 <= maxlength goto loop_top
+    maxlength = $I1
+    goto loop_top
+  loop_bottom:
+    .return(maxlength)
+.end
+
+.sub _print_elipses
+    .param string filename
+    .param int maxlength
+    .local int namelength
+    .local int lengthdiff
+    namelength = length filename
+    lengthdiff = maxlength - namelength
+    $I0 = lengthdiff + 2
+    $S0 = repeat ".", $I0
+    print " "
+    print $S0
+    print " "
+.end
+
 .sub main :main
     .param pmc argv
     .local pmc opts
@@ -46,7 +79,9 @@
     .local string output
     .local int success, exit_code
     .local int total_files, failing_files, failing_tests, tests
+    .local int namelength
 
+    namelength = _find_max_file_length(argv)
     i = 0
     failing_files = 0
     failing_tests = 0
@@ -57,8 +92,7 @@
     unless file goto done
     inc total_files
     print file
-    # these should be normalized to make the output format 'pretty'
-    print ".........."
+    _print_elipses(file, namelength)
 
     # we assume the test is PIR unless given an --exec flag
     # how to do proper shebang-line detection?
