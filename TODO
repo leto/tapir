@@ -41,6 +41,16 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Tests and implementation for out of order test notification
 
 * Submitting smoke reports to smolder
+    option --archive
     TAP::Harness::Archive for Parrot
 
 * How to deal with differences been TAP versions?
+
+* option --env
+    see https://rt.cpan.org/Public/Bug/Display.html?id=50215
+
+* Availability
+    a single pbc (t/harness.pbc)
+    a installable executable (parrot-tapir or parrot-prove)
+    in the Parrot tree (in ext/ like nqp-rx)
+
