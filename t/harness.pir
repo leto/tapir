@@ -87,7 +87,7 @@
     failing_tests = 0
     total_files   = 0
     tests         = 0
- loop:
+  loop:
     file = argv[i]
     unless file goto done
     inc total_files
@@ -100,7 +100,7 @@
     exec_cmd = 'parrot'
     unless exec goto run_cmd
     exec_cmd = exec
- run_cmd:
+  run_cmd:
     qx_data   = qx(exec,file)
     output    = qx_data[0]
     exit_code = qx_data[1]
@@ -120,7 +120,7 @@
     inc failing_files
 
     goto redo
- fail:
+  fail:
     print "failed "
     $I0 = stream.'get_fail'()
     print $I0

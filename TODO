@@ -54,3 +54,4 @@ Please let me know if you start hacking on one of these or if you have any amazi
     a installable executable (parrot-tapir or parrot-prove)
     in the Parrot tree (in ext/ like nqp-rx)
 
+* Pluggable output formats
