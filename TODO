@@ -2,7 +2,9 @@
 
 Please let me know if you start hacking on one of these or if you have any amazing ideas.
 
-* Be able to run any test file, not just PIR tests
+* Be able to run tests written in different languages in the same test run
+
+    Currently, Tapir assumes tests are in PIR unless given an --exec argument.
 
     Run /bin/sh -c or ./file, and then default to parrot if neither work ?
 
@@ -13,6 +15,8 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Use Getopt::Obj to have some nice command line options, like
     --help
     --shuffle
+    --merge
+    --env       # see https://rt.cpan.org/Public/Bug/Display.html?id=50215
 
   See _parse_opts() in t/harness.pir for examples
 
@@ -46,8 +50,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
 * How to deal with differences been TAP versions?
 
-* option --env
-    see https://rt.cpan.org/Public/Bug/Display.html?id=50215
 
 * Availability
     a single pbc (t/harness.pbc)

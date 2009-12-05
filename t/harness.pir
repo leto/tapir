@@ -131,10 +131,12 @@
     print $S0
     print " tests"
     $I1 = stream.'get_exit_code'()
-    unless $I1 goto redo
+    unless $I1 goto newline
     print ", exit code = "
     say $I1
-
+    goto redo
+ newline:
+    print "\n"
  redo:
     inc i
     goto loop
