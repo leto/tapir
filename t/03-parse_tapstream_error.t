@@ -7,7 +7,7 @@
     .include 'test_more.pir'
     .local pmc tapir, klass
 
-    plan(27)
+    plan(35)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -17,6 +17,46 @@
     test_parse_death_with_passing_tests(tapir)
     test_plumage_sanity(tapir)
     test_exit_code(tapir)
+    test_parse_tapstream_out_of_order(tapir)
+.end
+
+.sub test_parse_tapstream_out_of_order
+    .param pmc tapir
+    .local string tap_error
+    .local pmc stream
+    tap_error = <<"TAP"
+1..4
+ok 1 - foo
+ok 3 - bar
+ok 2 - baz
+ok 4 - fuzzlebub
+TAP
+    stream = tapir.'parse_tapstream'(tap_error)
+
+    $I0 = stream.'get_plan'()
+    is($I0,4,"plan is correct")
+
+    $I0 = stream.'is_pass'()
+    is($I0,0,"parse_tapstream does not pass something with out of order tests")
+
+    $I0 = stream.'get_pass'()
+    is($I0,4,"parse_tapstream gets 4 passed tests")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream gets no todo tests")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream gets no skip tests")
+
+    $I0 = stream.'get_fail'()
+    is($I0,0,"parse_tapstream gets no fails")
+
+    $I0 = stream.'total'()
+    is($I0,4,"parse_tapstream gets correct # of tests in total")
+
+    $I0 = stream.'get_exit_code'()
+    is($I0,0,"parse_tapstream gets correct exit code")
+
 .end
 
 .sub test_exit_code
