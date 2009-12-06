@@ -22,11 +22,12 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .param int exit_code :optional
     .local string curr_line
     .local pmc plan, pass, fail, skip, todo
-    .local int i, curr_test, reported_test
+    .local int i, curr_test, reported_test, ordered
     .local pmc tap_lines, parts, klass, stream
 
     i         = 0
     curr_test = 1
+    ordered   = 1
     fail      = new 'Integer'
     skip      = new 'Integer'
     todo      = new 'Integer'
@@ -49,6 +50,9 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     $I1 = self.'bail_if_necessary'(curr_line)
     if $I1 goto done
 
+    $I1 = self.'is_tap'(curr_line)
+    unless $I1 goto unrecognized
+
     split parts, "ok ", curr_line
 
     prefix        = parts[0]
@@ -57,8 +61,10 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     if prefix == 'not ' goto fail_or_todo
 
     if reported_test == curr_test goto pass_or_skip
+    # out of order test
+    ordered = 0
 
-    # it was an unrecognized line
+  unrecognized: # doesn't look like TAP, just ignore
     inc i
     goto loop
   pass_or_skip:
@@ -105,7 +111,20 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .return (stream)
 .end
 
-# parse_plan returns the expected number of test given a TAP stream as a string
+.sub is_tap :method
+    .param string tapline
+    $S0 = substr tapline, 0, 2
+    if $S0 == "ok" goto yes
+
+    $S0 = substr tapline, 0, 5
+    if $S0 == "not ok" goto yes
+    yes:
+        .return( 1 )
+    no:
+        .return( 0 )
+.end
+
+# parse_plan returns the expected number of tests given a plan line as a string
 
 .sub parse_plan :method
     .param string plan_line
