@@ -101,7 +101,7 @@
     unless exec goto run_cmd
     exec_cmd = exec
   run_cmd:
-    qx_data   = qx(exec,file)
+    qx_data   = qx(exec_cmd,file)
     output    = qx_data[0]
     exit_code = qx_data[1]
   parse:
