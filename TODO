@@ -52,6 +52,7 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Submitting smoke reports to smolder
     option --archive
     TAP::Harness::Archive for Parrot
+    and a easy way to append extra properties in meta.yml
 
 * How to deal with differences been TAP versions?
 
