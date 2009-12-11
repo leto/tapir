@@ -1,11 +1,30 @@
-=head1 These are things that need doin'
+=head1 These are things that need doin', in rough order of most-wanted first
 
 Please let me know if you start hacking on one of these or if you have any amazing ideas.
 
-* Use yaml tests in the t/source directory of  https://svn.hexten.net/tapx/tap-tests
+* Integrate Tapir so that it plays nicely with setup.pir, i.e. "parrot setup.pir test"
 
-    It would be nice if we could parse the YAML in PIR and treats these YAML files as
-    some kind of spec test suite for TAP
+* Availability/Installability
+    a single pbc (t/harness.pbc)
+    a installable executable (parrot-tapir or parrot-prove)
+    in the Parrot tree (in ext/ like nqp-rx)
+
+* Implement new command-line options with Getopt::Obj :
+    --help
+    --shuffle
+    --merge
+    --env       # see https://rt.cpan.org/Public/Bug/Display.html?id=50215
+
+  See _parse_opts() in t/harness.pir for examples
+
+* Tests and implementation for out of order test notification
+
+* Running tests in parallel
+    How to do it? There should be examples in the Parrot test suite
+
+* Parse bailout correctly
+
+    http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
 * Be able to run tests written in different languages in the same test run
 
@@ -17,37 +36,20 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
     We also have the option of using proc_exec from the global parrot config
 
-* Use Getopt::Obj to have some nice command line options, like
-    --help
-    --shuffle
-    --merge
-    --env       # see https://rt.cpan.org/Public/Bug/Display.html?id=50215
-
-  See _parse_opts() in t/harness.pir for examples
-
-* Parse skips/bailout correctly
-
-    http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
 * More detailed statistics in test summary : test runtime
 
 * Aggregation step in t/harness.pir needs to be abstracted out into Tapir::Harness and tested properly
 
+* Use yaml tests in the t/source directory of  https://svn.hexten.net/tapx/tap-tests
+
+    It would be nice if we could parse the YAML in PIR and treats these YAML files as
+    some kind of spec test suite for TAP
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Aggregator.pm
 
 * Benchmark tapir against Test::Harness and Test::Run, with euler_bench
     Test::Run   http://web-cpan.berlios.de/modules/Test-Run/
     euler_bench http://github.com/notbenh/euler_bench
-
-* Make the output format prettier
-    line up "passed" in the same column/etc
-
-* Running tests in parallel
-    How to do it? There should be examples in the Parrot test suite
-
-* Tests and implementation for parsing invalid plans
-
-* Tests and implementation for out of order test notification
 
 * Submitting smoke reports to smolder
     option --archive
@@ -55,11 +57,5 @@ Please let me know if you start hacking on one of these or if you have any amazi
     and a easy way to append extra properties in meta.yml
 
 * How to deal with differences been TAP versions?
-
-
-* Availability
-    a single pbc (t/harness.pbc)
-    a installable executable (parrot-tapir or parrot-prove)
-    in the Parrot tree (in ext/ like nqp-rx)
 
 * Pluggable output formats
