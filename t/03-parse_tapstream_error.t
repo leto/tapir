@@ -1,11 +1,11 @@
 #!/usr/bin/env parrot
 
-.include 'lib/Tapir/Parser.pir'
-.include 'lib/Tapir/Stream.pir'
 
 .sub main :main
     .include 'test_more.pir'
     .local pmc tapir, klass
+    load_bytecode 'lib/Tapir/Stream.pir'
+    load_bytecode 'lib/Tapir/Parser.pir'
 
     plan(28)
 

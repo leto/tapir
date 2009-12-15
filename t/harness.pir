@@ -1,7 +1,5 @@
 # Copyright (C) 2009, Jonathan "Duke" Leto <jonathan@leto.net>
 
-.include 'lib/Tapir/Parser.pir'
-.include 'lib/Tapir/Stream.pir'
 
 .sub version
     say "Tapir version 0.01"
@@ -57,6 +55,9 @@
     .param pmc argv
     .local pmc opts
     .local string exec
+
+    load_bytecode 'lib/Tapir/Parser.pbc'
+    load_bytecode 'lib/Tapir/Stream.pbc'
 
     $S0  = shift argv  # get rid of harness.pir in the args list
 
