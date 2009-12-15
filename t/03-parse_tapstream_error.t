@@ -4,8 +4,8 @@
 .sub main :main
     .include 'test_more.pir'
     .local pmc tapir, klass
-    load_bytecode 'lib/Tapir/Stream.pir'
-    load_bytecode 'lib/Tapir/Parser.pir'
+    load_bytecode 'lib/Tapir/Stream.pbc'
+    load_bytecode 'lib/Tapir/Parser.pbc'
 
     plan(28)
 
