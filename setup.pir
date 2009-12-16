@@ -1,9 +1,6 @@
 #!/usr/bin/env parrot
 # Copyright (C) 2009, Jonathan "Duke" Leto
 
-# Thanks to whiteknight++ (because I stole and tweaked this from
-# parrot-linear-algebra) and fperrad++, for writing distutils for Parrot
-
 =head1 NAME
 
 setup.pir - Setup, build, test and install Tapir
@@ -27,6 +24,9 @@ See F<runtime/parrot/library/distutils.pir>.
     $S0 = shift args
     load_bytecode 'distutils.pbc'
 
+    .const 'Sub' test = 'test'
+    register_step('test', test)
+
     $P0 = new 'Hash'
     $P0['name'] = 'tapir'
     $P0['abstract'] = 'Fast TAP Harness written in PIR'
@@ -36,27 +36,47 @@ See F<runtime/parrot/library/distutils.pir>.
     $P0['keywords'] = $P1
     $P0['license_type'] = 'Artistic License 2.0'
     $P0['license_uri'] = 'http://www.perlfoundation.org/artistic_license_2_0'
-    $P0['copyright_holder'] = 'Jonathan "Duke" Leto'
+    $P0['copyright_holder'] = "Jonathan \"Duke\" Leto"
     $P0['checkout_uri'] = 'git://github.com/leto/tapir.git'
     $P0['browser_uri'] = 'http://github.com/leto/tapir'
     $P0['project_uri'] = 'http://github.com/leto/tapir'
 
     # build
-    $P4 = new 'Hash'
-    $P4['t/harness.pbc'] = 't/harness.pir'
-    $P4['lib/Tapir/Parser.pbc'] = 'lib/Tapir/Parser.pir'
-    $P4['lib/Tapir/Stream.pbc'] = 'lib/Tapir/Stream.pir'
-    $P0['pbc_pir'] = $P4
+    $P2 = new 'Hash'
+    $P2['t/harness.pbc'] = 't/harness.pir'
+    $P2['lib/Tapir/Parser.pbc'] = 'lib/Tapir/Parser.pir'
+    $P2['lib/Tapir/Stream.pbc'] = 'lib/Tapir/Stream.pir'
+    $P0['pbc_pir'] = $P2
 
-    # test
-    $P0['harness_exec'] = './tapir'
-    $P0['harness_files'] = 't/*.t'
+    $P3 = new 'Hash'
+    $P4 = split ' ', 't/harness.pbc lib/Tapir/Parser.pbc lib/Tapir/Stream.pbc'
+    $P3['tapir.pbc'] = $P4
+    $P0['pbc_pbc'] = $P3
 
-    # dist
-    $P5 = glob('lib/Tapir/*.pir t/*.pir t/*.t')
-    $P0['manifest_includes'] = $P5
+    $P5 = new 'Hash'
+    $P5['parrot-tapir'] = 'tapir.pbc'
+    $P0['exe_pbc'] = $P5
+    $P0['installable_pbc'] = $P5
 
     .tailcall setup(args :flat, $P0 :flat :named)
+.end
+
+.sub 'test' :anon
+    .param pmc kv :slurpy :named
+    run_step('build', kv :flat :named)
+
+    .local pmc config
+    config = get_config()
+    $S0 = config['osname']
+    .local string cmd
+    unless $S0 == 'MSWin32' goto L1
+    cmd = 'tapir.exe'
+    goto L2
+  L1:
+    cmd = './tapir'
+  L2:
+    cmd .= ' t/*.t'
+    system(cmd, 1 :named('verbose'))
 .end
 
 # Local Variables:
