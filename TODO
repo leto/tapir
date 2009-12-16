@@ -3,10 +3,11 @@
 Please let me know if you start hacking on one of these or if you have any amazing ideas.
 
 * Integrate Tapir so that it plays nicely with setup.pir, i.e. "parrot setup.pir test"
+    This has begun, but distutils does not seem to have a pbc_merge stage, so the final
+    fakecutable cannot be created yet
+    There should be at least 2 ways to run the tests: Tapir and prove
 
 * Availability/Installability
-    a single pbc (t/harness.pbc)
-    a installable executable (parrot-tapir or parrot-prove)
     in the Parrot tree (in ext/ like nqp-rx)
 
 * Implement new command-line options with Getopt::Obj :
