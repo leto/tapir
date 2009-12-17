@@ -6,6 +6,28 @@
     exit 0
 .end
 
+.sub help
+    say <<"HELP"
+
+Tapir is a TAP test harness. There are different ways to run it, depending on
+your preferences and build, but this should always work:
+
+        parrot t/harness.pir t/*.t
+
+If you have created binary "fakecutable" (this requires a working compiler in
+your PATH) then you can use Tapir like this:
+
+        ./tapir t/*.t
+
+Currently supported arguments:
+    --exec=program      Use a given program to execute test scripts
+                        i.e. ./tapir --exec=perl t/*.t to run Perl tests
+    --help              This message
+
+HELP
+    exit 0
+.end
+
 .sub _parse_opts
     .param pmc argv
     .local pmc getopts, opts
@@ -14,6 +36,7 @@
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
     push getopts, "version"
+    push getopts, "help"
     opts = getopts."get_options"(argv)
     .return(opts)
 .end
@@ -55,17 +78,29 @@
     .param pmc argv
     .local pmc opts
     .local string exec
+    .local int argc
 
+    $S0  = shift argv  # get rid of harness.pir in the args list
+
+    argc = elements argv
+    if argc > 0 goto load_libs
+    help()
+
+  load_libs:
     load_bytecode 'lib/Tapir/Parser.pbc'
     load_bytecode 'lib/Tapir/Stream.pbc'
 
-    $S0  = shift argv  # get rid of harness.pir in the args list
 
     # parse command line args
     opts = _parse_opts(argv)
     exec = opts["exec"]
     $S1  = opts["version"]
+    $S2  = opts["help"]
 
+    unless $S2 goto check_version
+    help()
+
+  check_version:
     unless $S1 goto make_parser
     version()
 
