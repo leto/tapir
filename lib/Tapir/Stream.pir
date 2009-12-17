@@ -2,8 +2,12 @@
 
 .namespace [ 'Tapir'; 'Stream' ]
 
-.sub _initialize :load :init
-    #say "Initializing!"
+# 06:28:33 <@chromatic> :load executes only when loading from bytecode.
+# 06:28:48 <@chromatic> :init executes right after compilation.
+# 06:29:17 <@chromatic> The effects of :init should be frozen into PBC.
+# 06:37:26 <@chromatic> :anon :init trips the "Do something special with bytecode" magic.
+
+.sub _initialize :load :anon
     .local pmc klass
 
     klass  = newclass [ 'Tapir'; 'Stream' ]

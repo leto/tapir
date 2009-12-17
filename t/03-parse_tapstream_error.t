@@ -1,13 +1,13 @@
 #!/usr/bin/env parrot
 
-.include 'lib/Tapir/Parser.pir'
-.include 'lib/Tapir/Stream.pir'
 
 .sub main :main
     .include 'test_more.pir'
     .local pmc tapir, klass
+    load_bytecode 'lib/Tapir/Stream.pbc'
+    load_bytecode 'lib/Tapir/Parser.pbc'
 
-    plan(35)
+    plan(36)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -17,6 +17,7 @@
     test_parse_death_with_passing_tests(tapir)
     test_plumage_sanity(tapir)
     test_exit_code(tapir)
+    test_exit_code_pass(tapir)
     test_parse_tapstream_out_of_order(tapir)
 .end
 
@@ -58,6 +59,21 @@ TAP
     is($I0,0,"parse_tapstream gets correct exit code")
 
 .end
+
+.sub test_exit_code_pass
+    .param pmc tapir
+    .local string tap
+    .local pmc stream
+    tap = <<"TAP"
+1..2
+ok 1 - Class of Tapir::Parser is of the correct type
+ok 2 - new returns a Tapir::Parser object isa Tapir;Parser
+TAP
+    stream = tapir.'parse_tapstream'(tap,0)
+    $I0 = stream.'get_exit_code'()
+    is($I0,0,"parse_tapstream gets passing exit code")
+.end
+
 
 .sub test_exit_code
     .param pmc tapir

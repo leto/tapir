@@ -1,10 +1,30 @@
 # Copyright (C) 2009, Jonathan "Duke" Leto <jonathan@leto.net>
 
-.include 'lib/Tapir/Parser.pir'
-.include 'lib/Tapir/Stream.pir'
 
 .sub version
     say "Tapir version 0.01"
+    exit 0
+.end
+
+.sub help
+    say <<"HELP"
+
+Tapir is a TAP test harness. There are different ways to run it, depending on
+your preferences and build, but this should always work:
+
+        parrot t/harness.pir t/*.t
+
+If you have created binary "fakecutable" (this requires a working compiler in
+your PATH) then you can use Tapir like this:
+
+        ./tapir t/*.t
+
+Currently supported arguments:
+    --exec=program      Use a given program to execute test scripts
+                        i.e. ./tapir --exec=perl t/*.t to run Perl tests
+    --help              This message
+
+HELP
     exit 0
 .end
 
@@ -12,10 +32,11 @@
     .param pmc argv
     .local pmc getopts, opts
     load_bytecode "Getopt/Obj.pbc"
-    getopts = new "Getopt::Obj"
+    getopts = new 'Getopt::Obj'
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
     push getopts, "version"
+    push getopts, "help"
     opts = getopts."get_options"(argv)
     .return(opts)
 .end
@@ -57,14 +78,29 @@
     .param pmc argv
     .local pmc opts
     .local string exec
+    .local int argc
 
     $S0  = shift argv  # get rid of harness.pir in the args list
+
+    argc = elements argv
+    if argc > 0 goto load_libs
+    help()
+
+  load_libs:
+    load_bytecode 'lib/Tapir/Parser.pbc'
+    load_bytecode 'lib/Tapir/Stream.pbc'
+
 
     # parse command line args
     opts = _parse_opts(argv)
     exec = opts["exec"]
     $S1  = opts["version"]
+    $S2  = opts["help"]
 
+    unless $S2 goto check_version
+    help()
+
+  check_version:
     unless $S1 goto make_parser
     version()
 
@@ -87,7 +123,7 @@
     failing_tests = 0
     total_files   = 0
     tests         = 0
- loop:
+  loop:
     file = argv[i]
     unless file goto done
     inc total_files
@@ -100,8 +136,8 @@
     exec_cmd = 'parrot'
     unless exec goto run_cmd
     exec_cmd = exec
- run_cmd:
-    qx_data   = qx(exec,file)
+  run_cmd:
+    qx_data   = qx(exec_cmd,file)
     output    = qx_data[0]
     exit_code = qx_data[1]
   parse:
@@ -120,7 +156,7 @@
     inc failing_files
 
     goto redo
- fail:
+  fail:
     print "failed "
     $I0 = stream.'get_fail'()
     print $I0
@@ -131,10 +167,12 @@
     print $S0
     print " tests"
     $I1 = stream.'get_exit_code'()
-    unless $I1 goto redo
+    unless $I1 goto newline
     print ", exit code = "
     say $I1
-
+    goto redo
+ newline:
+    print "\n"
  redo:
     inc i
     goto loop

@@ -1,23 +1,22 @@
-
 Tapir is a PIR-based TAP (Test Anything Protocol) Harness
 
-It eats test output and tells humans if the test suite passed, and if not,
+It eats test output (i.e. is a TAP consumer) and tells humans if the test suite passed, and if not,
 which kind of pretty colors of smoke came out.
 
 The only requirement for Tapir is Parrot 1.8.0 or higher.
 
-To run the Tapir test suite with Tapir:
+To run the Tapir test suite with Tapir, first you must generate the PBC files with
 
-    $ parrot t/harness.pir t/*.t
+    $ make
+
+The dependency on 'make' will disappear once we move to a pure-Parrot build (setup.pir)
+
+Now to run the test suite:
+
+    $ ./tapir t/*.t
 
 Also, you can always use parrot or prove to run Tapir tests individually:
 
     $ parrot t/01-parse_plan.t
-
-You should see something like:
-
-1..3
-ok 1 - parse_plan can parse a simple plan
-ok 2 - parse_plan can parse a single test plan
-ok 3 - parse_plan can parse a no-test plan
+    $ prove -v t/01-parse_plan.t
 
