@@ -2,9 +2,8 @@
 
 Please let me know if you start hacking on one of these or if you have any amazing ideas.
 
-* Integrate Tapir so that it plays nicely with setup.pir, i.e. "parrot setup.pir test"
-    This has begun, but distutils does not seem to have a pbc_merge stage, so the final
-    fakecutable cannot be created yet
+* Integrate Tapir so that it plays nicely with setup.pir, i.e. "parrot setup.pir build" and "parrot setup.pir test"
+    The fakecutable is probably not being created correctly.
     There should be at least 2 ways to run the tests: Tapir and prove
 
 * Availability/Installability
@@ -48,7 +47,7 @@ Please let me know if you start hacking on one of these or if you have any amazi
     some kind of spec test suite for TAP
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Aggregator.pm
 
-* Benchmark tapir against Test::Harness and Test::Run, with euler_bench
+* Benchmark tapir against Test::Harness (3.x and 2.x) and (maybe) Test::Run, with euler_bench
     Test::Run   http://web-cpan.berlios.de/modules/Test-Run/
     euler_bench http://github.com/notbenh/euler_bench
 
