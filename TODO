@@ -10,7 +10,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
     in the Parrot tree (in ext/ like nqp-rx)
 
 * Implement new command-line options with Getopt::Obj :
-    --help
     --shuffle
     --merge
     --env       # see https://rt.cpan.org/Public/Bug/Display.html?id=50215
@@ -37,7 +36,10 @@ Please let me know if you start hacking on one of these or if you have any amazi
     We also have the option of using proc_exec from the global parrot config
 
 
-* More detailed statistics in test summary : test runtime
+* More detailed statistics in test summary : user time (in addition to the current wallclock time)
+    - This requires Parrot support, which is tracked in http://trac.parrot.org/parrot/ticket/1379
+
+
 
 * Aggregation step in t/harness.pir needs to be abstracted out into Tapir::Harness and tested properly
 
