@@ -30,9 +30,6 @@
         "test"     : {
             "type" : "parrot_setup"
         },
-        "smoke"    : {
-            "type" : "parrot_setup"
-        },
         "install"  : {
             "type" : "parrot_setup"
         },
@@ -48,7 +45,7 @@
         "requires"     : {
             "fetch"    : ["git"],
             "build"    : [],
-            "test"     : ["perl5"],
+            "test"     : [],
             "install"  : [],
             "runtime"  : []
         }

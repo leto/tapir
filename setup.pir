@@ -43,15 +43,14 @@ See F<runtime/parrot/library/distutils.pir>.
 
     # build
     $P2 = new 'Hash'
-    $P2['t/harness.pbc'] = 't/harness.pir'
-    $P2['lib/Tapir/Parser.pbc'] = 'lib/Tapir/Parser.pir'
-    $P2['lib/Tapir/Stream.pbc'] = 'lib/Tapir/Stream.pir'
+    $P3 = split "\n", <<'SOURCES'
+t/harness.pir
+lib/Tapir/Parser.pir
+lib/Tapir/Stream.pir
+SOURCES
+    $S0 = pop $P3
+    $P2['tapir.pbc'] = $P3
     $P0['pbc_pir'] = $P2
-
-    $P3 = new 'Hash'
-    $P4 = split ' ', 't/harness.pbc lib/Tapir/Parser.pbc lib/Tapir/Stream.pbc'
-    $P3['tapir.pbc'] = $P4
-    $P0['pbc_pbc'] = $P3
 
     $P5 = new 'Hash'
     $P5['parrot-tapir'] = 'tapir.pbc'
