@@ -216,7 +216,8 @@ HELP
     $S1 = sprintf "%.4f", $P0
     print $S1
     say " seconds"
-    .return()
+    $I0 = failing_files != 0
+    exit $I0
 .end
 
 .sub 'qx'
