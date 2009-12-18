@@ -20,8 +20,15 @@ your PATH) then you can use Tapir like this:
         ./tapir t/*.t
 
 Currently supported arguments:
+    -v                  Print the output of each test file
+    --verbose
+
+    --version           Print out the current Tapir version
+
+    -e
     --exec=program      Use a given program to execute test scripts
                         i.e. ./tapir --exec=perl t/*.t to run Perl tests
+    -h
     --help              This message
 
 HELP
@@ -35,8 +42,9 @@ HELP
     getopts = new 'Getopt::Obj'
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
+    push getopts, "verbose|v"
     push getopts, "version"
-    push getopts, "help"
+    push getopts, "help|h"
     opts = getopts."get_options"(argv)
     .return(opts)
 .end
@@ -77,7 +85,7 @@ HELP
 .sub main :main
     .param pmc argv
     .local pmc opts
-    .local string exec
+    .local string exec, verbose
     .local int argc
     .local num start_time, end_time
 
@@ -94,10 +102,11 @@ HELP
 
 
     # parse command line args
-    opts = _parse_opts(argv)
-    exec = opts["exec"]
-    $S1  = opts["version"]
-    $S2  = opts["help"]
+    opts    = _parse_opts(argv)
+    exec    = opts["exec"]
+    $S1     = opts["version"]
+    $S2     = opts["help"]
+    verbose = opts["verbose"]
 
     unless $S2 goto check_version
     help()
@@ -142,6 +151,8 @@ HELP
     qx_data   = qx(exec_cmd,file)
     output    = qx_data[0]
     exit_code = qx_data[1]
+    unless verbose goto parse
+    print output
   parse:
     stream    = tapir.'parse_tapstream'(output, exit_code)
     success   = stream.'is_pass'()
