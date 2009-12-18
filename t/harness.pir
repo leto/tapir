@@ -79,7 +79,9 @@ HELP
     .local pmc opts
     .local string exec
     .local int argc
+    .local num start_time, end_time
 
+    start_time  = time
     $S0  = shift argv  # get rid of harness.pir in the args list
 
     argc = elements argv
@@ -194,6 +196,14 @@ HELP
     print total_files
     say " files"
   over:
+    end_time = time
+    $N1 = end_time - start_time
+    print "Runtime: "
+    $P0 = new 'ResizablePMCArray'
+    $P0[0] = $N1
+    $S1 = sprintf "%.4f", $P0
+    print $S1
+    say " seconds"
     .return()
 .end
 
