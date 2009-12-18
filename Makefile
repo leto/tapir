@@ -7,10 +7,7 @@ all:
 	pbc_to_exe tapir.pbc
 
 clean:
-	rm tapir
-	rm *.pbc
-	rm t/harness.pbc
-	rm lib/Tapir/*.pbc
+	rm tapir *.pbc t/harness.pbc lib/Tapir/*.pbc
 
 test:
 	./tapir t/*.t
