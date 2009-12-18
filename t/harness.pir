@@ -199,7 +199,8 @@ HELP
     end_time = time
     $N1 = end_time - start_time
     print "Runtime: "
-    $P0 = new 'ResizablePMCArray'
+    $P0 = new 'FixedPMCArray'
+    $P0 = 1
     $P0[0] = $N1
     $S1 = sprintf "%.4f", $P0
     print $S1
