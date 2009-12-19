@@ -196,7 +196,7 @@ HELP
     print tests
     print " test(s) in "
     print total_files
-    say " files"
+    print " files"
     goto over
   print_fail:
     print "FAILED "
@@ -205,17 +205,17 @@ HELP
     print failing_files
     print "/"
     print total_files
-    say " files"
+    print " files"
   over:
     end_time = time
     $N1 = end_time - start_time
-    print "Runtime: "
+    print " ("
     $P0 = new 'FixedPMCArray'
     $P0 = 1
     $P0[0] = $N1
     $S1 = sprintf "%.4f", $P0
     print $S1
-    say " seconds"
+    say " seconds)"
     $I0 = failing_files != 0
     exit $I0
 .end
