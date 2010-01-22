@@ -7,7 +7,7 @@
     load_bytecode 'lib/Tapir/Parser.pbc'
     load_bytecode 'lib/Tapir/Stream.pbc'
 
-    plan(59)
+    plan(61)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -24,6 +24,26 @@
     test_parse_tapstream_not_enough_tests(tapir)
     test_parse_tapstream_todo(tapir)
     test_parse_tapstream_skip(tapir)
+    test_parse_tapstream_bail(tapir)
+.end
+
+
+.sub test_parse_tapstream_bail
+    .param pmc tapir
+    .local pmc stream
+    .local string tap
+    tap = <<"TAP"
+1..2
+ok 1 - Testing some stuff
+Bail out! Ruh roh
+ok 2 - This test is never run
+TAP
+    stream = tapir.'parse_tapstream'(tap)
+    $I0 = stream.'get_pass'()
+    is($I0,1,'parse_tapstream bails out properly')
+
+    $I0 = stream.'get_fail'()
+    is($I0,0,'parse_tapstream gets the right number of fails when bailing')
 .end
 
 .sub test_parse_tapstream_skip

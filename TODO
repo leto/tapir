@@ -21,8 +21,9 @@ Please let me know if you start hacking on one of these or if you have any amazi
 * Running tests in parallel
     How to do it? There should be examples in the Parrot test suite
 
-* Parse bailout correctly
+* Parse bailout correctly - This is implemented, but should be tested more
 
+    http://search.cpan.org/~petdance/TAP-1.00/TAP.pm
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
 
 * Be able to run tests written in different languages in the same test run
