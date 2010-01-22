@@ -7,7 +7,7 @@
     load_bytecode 'lib/Tapir/Parser.pbc'
     load_bytecode 'lib/Tapir/Stream.pbc'
 
-    plan(61)
+    plan(68)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -25,8 +25,51 @@
     test_parse_tapstream_todo(tapir)
     test_parse_tapstream_skip(tapir)
     test_parse_tapstream_bail(tapir)
+    test_parse_tapstream_correct_number_of_failed(tapir)
 .end
 
+
+.sub test_parse_tapstream_correct_number_of_failed
+    .param pmc tapir
+    .local pmc stream
+    .local string tap
+    tap = <<"TAP"
+1..3
+
+not ok 1
+# Failed test 1
+#         have: NULL
+#         want: 1
+ok 2
+not ok 3
+# Failed test 3
+#         have: NULL
+#         want: cheese
+# Looks like you failed 2 tests of 3
+TAP
+    stream = tapir.'parse_tapstream'(tap)
+
+    $I0 = stream.'get_plan'()
+    is($I0,3,"parse_tapstream detects the plan correctly")
+
+    $I0 = stream.'get_pass'()
+    is($I0,1,"parse_tapstream detects 1 passing test")
+
+    $I0 = stream.'get_fail'()
+    is($I0,2,"parse_tapstream detects 2 failing tests")
+
+    $I0 = stream.'get_todo'()
+    is($I0,0,"parse_tapstream detects no todo tests")
+
+    $I0 = stream.'get_skip'()
+    is($I0,0,"parse_tapstream detects two skipped test")
+
+    $I0 = stream.'total'()
+    is($I0,3,"parse_tapstream detected 3 tests in total")
+
+    $I0 = stream.'is_pass'()
+    is($I0,0,"parse_tapstream fails this")
+.end
 
 .sub test_parse_tapstream_bail
     .param pmc tapir
