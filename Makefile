@@ -9,5 +9,5 @@ all:
 clean:
 	rm tapir *.pbc t/harness.pbc lib/Tapir/*.pbc
 
-test:
+test: all
 	./tapir t/*.t
