@@ -119,11 +119,10 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     $S0 = substr tapline, 0, 7
     if $S0 == "not ok " goto yes
 
-    goto no
-    yes:
-        .return( 1 )
     no:
         .return( 0 )
+    yes:
+        .return( 1 )
 .end
 
 # parse_plan returns the expected number of tests given a plan line as a string
