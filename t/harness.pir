@@ -174,7 +174,7 @@ HELP
     $I0 = stream.'get_fail'()
     print $I0
     inc failing_files
-    inc failing_tests
+    failing_tests += $I0
     $S1 = stream.'total'()
     $S0 = "/" . $S1
     print $S0
