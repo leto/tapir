@@ -7,7 +7,7 @@
     load_bytecode 'lib/Tapir/Stream.pbc'
     load_bytecode 'lib/Tapir/Parser.pbc'
 
-    plan(42)
+    plan(44)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -20,6 +20,20 @@
     test_exit_code_pass(tapir)
     test_parse_tapstream_out_of_order(tapir)
     test_is_tap(tapir)
+    test_is_bail(tapir)
+.end
+
+.sub test_is_bail
+    .param pmc tapir
+    .local pmc stream
+
+    $S0 = 'Who paid for this damn Bail out!?!'
+    $I0 = tapir.'bail_if_necessary'($S0)
+    is($I0,0,'bail_if_necessary does not get fooled by invalid bailout line')
+
+    $S0 = 'Bail out!'
+    $I0 = tapir.'bail_if_necessary'($S0)
+    is($I0,1,'bail_if_necessary detects valid bailout')
 .end
 
 .sub test_is_tap
