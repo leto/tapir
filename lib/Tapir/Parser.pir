@@ -22,7 +22,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     .param int exit_code :optional
     .local string curr_line
     .local pmc plan, pass, fail, skip, todo
-    .local int i, curr_test, reported_test, ordered
+    .local int i, curr_test, reported_test, ordered, num_lines
     .local pmc tap_lines, parts, klass, stream
 
     i         = 0
@@ -37,7 +37,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     parts     = new 'ResizablePMCArray'
 
     split tap_lines, "\n", tap
-    $I0 = tap_lines
+    num_lines = tap_lines
 
     .local string plan_line
     plan_line = tap_lines[0]
@@ -45,13 +45,16 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
     .local string prefix
   loop:
-    if i >= $I0 goto done
+    if i >= num_lines goto done
     curr_line = tap_lines[i]
-    $I1 = self.'bail_if_necessary'(curr_line)
-    if $I1 goto done
 
-    $I1 = self.'is_tap'(curr_line)
-    unless $I1 goto unrecognized
+    .local int need_to_bail
+    need_to_bail = self.'bail_if_necessary'(curr_line)
+    if need_to_bail goto done
+
+    .local int is_tap
+    is_tap = self.'is_tap'(curr_line)
+    unless is_tap goto unrecognized
 
     split parts, "ok ", curr_line
 
