@@ -8,6 +8,15 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
 .namespace [ 'Tapir'; 'Parser' ]
 
+.sub bail_if_necessary :method
+    .param string line
+    $S0 = substr line, 0, 9
+    if $S0 == 'Bail out!' goto bail_out
+    .return(0)
+  bail_out:
+    .return(1)
+.end
+
 .sub parse_tapstream :method
     .param string tap
     .param int exit_code :optional
@@ -38,8 +47,12 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
   loop:
     if i >= $I0 goto done
     curr_line = tap_lines[i]
-    $I0 = self.'is_tap'(curr_line)
-    unless $I0 goto unrecognized
+
+    $I1 = self.'is_tap'(curr_line)
+    unless $I1 goto unrecognized
+
+    $I1 = self.'bail_if_necessary'(curr_line)
+    if $I1 goto done
 
     split parts, "ok ", curr_line
 

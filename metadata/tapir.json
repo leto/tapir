@@ -1,0 +1,61 @@
+{
+    "meta-spec"    : {
+        "version"  : 1,
+        "uri"      : "https://trac.parrot.org/parrot/wiki/ModuleEcosystem"
+    },
+    "general"      : {
+        "name"     : "tapir",
+        "abstract" : "Fast TAP Harness written in PIR",
+        "authority": "http://github.com/leto",
+        "version"  : "HEAD",
+        "license"  : {
+            "type" : "Artistic License 2.0",
+            "uri"  : "http://www.perlfoundation.org/artistic_license_2_0"
+        },
+        "copyright_holder" : "Jonathan \"Duke\" Leto",
+        "generated_by"     : "distutils",
+        "keywords"         : ["TAP", "harness", "testing"],
+        "description"      : "Fast TAP Harness written in PIR"
+    },
+    "instructions" : {
+        "fetch"    : {
+            "type" : "repository"
+        },
+        "update"   : {
+            "type" : "parrot_setup"
+        },
+        "build"    : {
+            "type" : "parrot_setup"
+        },
+        "test"     : {
+            "type" : "parrot_setup"
+        },
+        "install"  : {
+            "type" : "parrot_setup"
+        },
+        "uninstall": {
+            "type" : "parrot_setup"
+        },
+        "clean"    : {
+            "type" : "parrot_setup"
+        }
+    },
+    "dependency-info"  : {
+        "provides"     : ["tapir"],
+        "requires"     : {
+            "fetch"    : ["git"],
+            "build"    : [],
+            "test"     : [],
+            "install"  : [],
+            "runtime"  : []
+        }
+    },
+    "resources"            : {
+        "repository"       : {
+             "type"        : "git",
+             "checkout_uri": "git://github.com/leto/tapir.git",
+             "browser_uri" : "http://github.com/leto/tapir",
+             "project_uri" : "http://github.com/leto/tapir"
+        }
+    }
+}

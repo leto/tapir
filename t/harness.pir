@@ -20,8 +20,15 @@ your PATH) then you can use Tapir like this:
         ./tapir t/*.t
 
 Currently supported arguments:
+    -v                  Print the output of each test file
+    --verbose
+
+    --version           Print out the current Tapir version
+
+    -e
     --exec=program      Use a given program to execute test scripts
                         i.e. ./tapir --exec=perl t/*.t to run Perl tests
+    -h
     --help              This message
 
 HELP
@@ -35,8 +42,9 @@ HELP
     getopts = new 'Getopt::Obj'
     getopts."notOptStop"(1)
     push getopts, "exec|e:s"
+    push getopts, "verbose|v"
     push getopts, "version"
-    push getopts, "help"
+    push getopts, "help|h"
     opts = getopts."get_options"(argv)
     .return(opts)
 .end
@@ -77,9 +85,11 @@ HELP
 .sub main :main
     .param pmc argv
     .local pmc opts
-    .local string exec
+    .local string exec, verbose
     .local int argc
+    .local num start_time, end_time
 
+    start_time  = time
     $S0  = shift argv  # get rid of harness.pir in the args list
 
     argc = elements argv
@@ -92,10 +102,11 @@ HELP
 
 
     # parse command line args
-    opts = _parse_opts(argv)
-    exec = opts["exec"]
-    $S1  = opts["version"]
-    $S2  = opts["help"]
+    opts    = _parse_opts(argv)
+    exec    = opts["exec"]
+    $S1     = opts["version"]
+    $S2     = opts["help"]
+    verbose = opts["verbose"]
 
     unless $S2 goto check_version
     help()
@@ -140,6 +151,8 @@ HELP
     qx_data   = qx(exec_cmd,file)
     output    = qx_data[0]
     exit_code = qx_data[1]
+    unless verbose goto parse
+    print output
   parse:
     stream    = tapir.'parse_tapstream'(output, exit_code)
     success   = stream.'is_pass'()
@@ -183,7 +196,7 @@ HELP
     print tests
     print " test(s) in "
     print total_files
-    say " files"
+    print " files"
     goto over
   print_fail:
     print "FAILED "
@@ -192,9 +205,19 @@ HELP
     print failing_files
     print "/"
     print total_files
-    say " files"
+    print " files"
   over:
-    .return()
+    end_time = time
+    $N1 = end_time - start_time
+    print " ("
+    $P0 = new 'FixedPMCArray'
+    $P0 = 1
+    $P0[0] = $N1
+    $S1 = sprintf "%.4f", $P0
+    print $S1
+    say " seconds)"
+    $I0 = failing_files != 0
+    exit $I0
 .end
 
 .sub 'qx'
