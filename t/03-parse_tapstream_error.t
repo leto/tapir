@@ -7,7 +7,7 @@
     load_bytecode 'lib/Tapir/Stream.pbc'
     load_bytecode 'lib/Tapir/Parser.pbc'
 
-    plan(35)
+    plan(42)
 
     # setup test data
     klass = newclass [ 'Tapir'; 'Parser' ]
@@ -19,6 +19,36 @@
     test_exit_code(tapir)
     test_exit_code_pass(tapir)
     test_parse_tapstream_out_of_order(tapir)
+    test_is_tap(tapir)
+.end
+
+.sub test_is_tap
+    .param pmc tapir
+    .local pmc stream
+
+    $S0 = 'Who paid for this damn Bail out!?!'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,0,'invalid bailout detected by is_tap')
+
+    $S0 = 'ok 42'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,1,'valid ok line detected by is_tap')
+
+    $S0 = 'not ok 99999'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,1,'valid not ok line detected by is_tap')
+
+    $S0 = 'Some junk # and a comment'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,0,'non-TAP lines properly detected by is_tap')
+
+    $S0 = 'okie dokey pokey'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,0,'non-TAP lines properly detected by is_tap')
+
+    $S0 = 'not oklahoma, but any other state!'
+    $I0 = tapir.'is_tap'($S0)
+    is($I0,0,'non-TAP lines properly detected by is_tap')
 .end
 
 .sub test_parse_tapstream_out_of_order

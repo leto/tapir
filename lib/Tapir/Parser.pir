@@ -113,11 +113,13 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
 .sub is_tap :method
     .param string tapline
-    $S0 = substr tapline, 0, 2
-    if $S0 == "ok" goto yes
+    $S0 = substr tapline, 0, 3
+    if $S0 == "ok " goto yes
 
-    $S0 = substr tapline, 0, 5
-    if $S0 == "not ok" goto yes
+    $S0 = substr tapline, 0, 7
+    if $S0 == "not ok " goto yes
+
+    goto no
     yes:
         .return( 1 )
     no:
