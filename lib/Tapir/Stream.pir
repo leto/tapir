@@ -11,6 +11,7 @@
     .local pmc klass
 
     klass  = newclass [ 'Tapir'; 'Stream' ]
+    klass.'add_attribute'('ordered')
     klass.'add_attribute'('pass')
     klass.'add_attribute'('fail')
     klass.'add_attribute'('skip')
@@ -28,7 +29,10 @@
     exit_code = self."get_exit_code"()
     if exit_code goto failz
 
-    .local pmc skip, pass, todo, plan
+    .local pmc skip, pass, todo, plan, ordered
+    ordered = self."get_ordered"()
+    unless ordered goto disorder
+
     skip  = self."get_skip"()
     pass  = self."get_pass"()
     todo  = self."get_todo"()
@@ -36,8 +40,9 @@
     $P0   = pass + todo
     $P0  += skip
 
-    $I1 = plan == $P0
+    $I1  = plan == $P0
     .return( $I1 )
+  disorder:
   failz:
     .return( 0 )
 .end
@@ -45,6 +50,11 @@
 .sub set_exit_code :method
     .param pmc exit_code
     setattribute self, "exit_code", exit_code
+.end
+
+.sub set_ordered :method
+    .param pmc ordered
+    setattribute self, "ordered", ordered
 .end
 
 .sub set_pass :method
@@ -76,6 +86,12 @@
     .local pmc exit_code
     exit_code = getattribute self, "exit_code"
     .return( exit_code )
+.end
+
+.sub get_ordered :method
+    .local pmc ordered
+    ordered = getattribute self, "ordered"
+    .return( ordered )
 .end
 
 .sub get_pass :method

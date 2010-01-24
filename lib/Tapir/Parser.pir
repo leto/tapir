@@ -67,9 +67,12 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     # out of order test
     ordered = 0
 
+    goto pass_or_skip
+
   unrecognized: # doesn't look like TAP, just ignore
     inc i
     goto loop
+
   pass_or_skip:
     split parts, "# ", curr_line
     $S0 = parts[1]
@@ -105,6 +108,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
 
   done:
     stream = new [ 'Tapir'; 'Stream' ]
+    stream.'set_ordered'(ordered)
     stream.'set_pass'(pass)
     stream.'set_fail'(fail)
     stream.'set_todo'(todo)
