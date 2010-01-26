@@ -16,12 +16,13 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
   See _parse_opts() in t/harness.pir for examples
 
-* Tests and implementation for out of order test notification
+* Out of order test notification
+    Better diagnostics
 
 * Running tests in parallel
     How to do it? There should be examples in the Parrot test suite
 
-* Parse bailout correctly - This is implemented, but should be tested more
+* Bailout support - This is implemented, but should be tested more
 
     http://search.cpan.org/~petdance/TAP-1.00/TAP.pm
     http://cpansearch.perl.org/src/ANDYA/Test-Harness-3.17/lib/TAP/Parser/Grammar.pm
@@ -39,8 +40,6 @@ Please let me know if you start hacking on one of these or if you have any amazi
 
 * More detailed statistics in test summary : user time (in addition to the current wallclock time)
     - This requires Parrot support, which is tracked in http://trac.parrot.org/parrot/ticket/1379
-
-
 
 * Aggregation step in t/harness.pir needs to be abstracted out into Tapir::Harness and tested properly
 
