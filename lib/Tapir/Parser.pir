@@ -77,7 +77,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     split parts, "# ", curr_line
     $S0 = parts[1]
     $S0 = substr $S0, 0, 4
-    downcase $S0
+    $S0 = downcase $S0
     if $S0 != "skip" goto passz
     # it is a SKIP test!
     inc skip
@@ -88,7 +88,7 @@ Written and maintained by Jonathan "Duke" Leto C<< jonathan@leto.net >>.
     split parts, "# ", curr_line
     $S0 = parts[1]
     $S0 = substr $S0, 0, 4
-    downcase $S0
+    $S0 = downcase $S0
     if $S0 != "todo" goto failz
     # it is a TODO test!
     inc todo
